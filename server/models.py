@@ -135,3 +135,9 @@ class Record(db.Model, SerializerMixin):
             raise ValueError("Description is required")
         return value
     
+
+class RecordImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
+    image_url = db.Column(db.String)
+    created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
