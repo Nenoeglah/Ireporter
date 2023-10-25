@@ -8,14 +8,14 @@ def seed_data():
     user3 = User(id=3, username="Jace", password="password3", phone_number="+254 79876543", email="jace@jace.com")
 
     # Create admin account
-    admin = Admin(id=1, username="AdminUsername", password="adminpassword", phone_number="888888888", email="kitty@kitty.com")
+    admin = Admin(id=1, username="Kitty", password="adminpassword", phone_number="+254 711121314 ", email="kitty@kitty.com")
 
     # Create records
     record1 = Record(
         id=1,
         user_id=1,
         admin_id=1,
-        location="40.7128,-74.0060",
+        location="Nairobi",
         type="Red Flag",
         status="Under Investigation",
         description="This is a corruption incident in the government sector.",
@@ -25,7 +25,7 @@ def seed_data():
         id=2,
         user_id=2,
         admin_id=1,
-        location="34.0522,-118.2437",
+        location="Nairobi",
         type="Intervention",
         status="Resolved",
         description="Environmental pollution is a major issue affecting Africa.",
@@ -64,7 +64,5 @@ def seed_data():
 
     # Commit changes to the database
     db.session.commit()
-
-if __name__ == '__main__':
-    seed_data()
-    print("Database seeded successfully.")
+    
+print("🦸‍♀️ Database seeded successfully!")
