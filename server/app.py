@@ -6,6 +6,12 @@ from models import User, Admin, Record, RecordImage, RecordVideo, Notification, 
 
 db.init_app(app)
 
+migrate = Migrate(app, db)
+
+@app.route('/')
+def home():
+    return 'Ireporter'
+
 @app.route('/records')
 def records():
     records_list = []
