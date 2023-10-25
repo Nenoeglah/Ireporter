@@ -8,7 +8,7 @@ def seed_data():
     user3 = User(id=3, username="Jace", password="password3", phone_number="+254 79876543", email="jace@jace.com")
 
     # Create admin account
-    admin = Admin(id=1, username="Kitty", password="adminpassword", phone_number="+254 711121314 ", email="kitty@kitty.com")
+    admin = Admin(id=1, username="Kityy", password="adminpassword", phone_number="+254 711121314", email="kitty@kitty.com")
 
     # Create records
     record1 = Record(
