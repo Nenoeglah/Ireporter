@@ -104,4 +104,34 @@ class Admin(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(
             self._password_hash, password.encode('utf-8'))
 
+class Record(db.Model, SerializerMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String)
+    description = db.Column(db.Text)
+    status = db.Column(db.String)
+    created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
 
+    # define the relationship between user and admin table
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'))
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'category': self.category,
+            'description': self.description,
+            'status': self.status
+        }
+    
+    @validates('category')
+    def validate_category(self, value):
+        if not value:
+            raise ValueError("Choose a category!")
+        return value
+    
+    @validates('description')
+    def validate_description(self, value):
+        if not value:
+            raise ValueError("Description is required")
+        return value
+    
