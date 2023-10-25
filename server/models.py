@@ -4,8 +4,7 @@ from sqlalchemy.orm import validates, relationship
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.hybrid import hybrid_property
 #import bcrypt and db from config to prevent circular imports
-
-db =SQLAlchemy()
+from config import db, bcrypt
 
 # create user table with validations 
 class User(db.Model, SerializerMixin):
