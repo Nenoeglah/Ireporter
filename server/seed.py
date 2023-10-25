@@ -1,40 +1,43 @@
 from app import db
-from models import User, RedFlag, Intervention, Status
+from models import User, Record, RecordImage, RecordVideo, Notification, Geolocation
 
 def seed_data():
    
-    user1 = User(username="Georgia", email="georgia@georgia.com", password="password1")
-    user2 = User(username="Ginny", email="ginny@ginny.com", password="password2")
-    user3 = User(username="Jace", email="jace@jace.com", password="password3")
+    user1 = User(username="Georgia", email="georgia@georgia.com", password="password1", phone_number="0712345678")
+    user2 = User(username="Ginny", email="ginny@ginny.com", password="password2", phone_number="0700000000")
+    user3 = User(username="Jace", email="jace@jace.com", password="password3", phone_number="0711111111")
 
     
-    status1 = Status(name="Under Investigation")
-    status2 = Status(name="Resolved")
-    status3 = Status(name="Rejected")
+    status1 = "Under Investigation"
+    status2 = "Resolved"
+    status3 = "Rejected"
 
     
-    red_flag1 = RedFlag(
+    red_flag1 = Record(
         title="Corruption in Government",
         description="This is a corruption incident in the government sector.",
         user=user1,
         status=status1,
-        geolocation="40.7128,-74.0060", 
+        location="Nairobi",
+        # geolocation="40.7128,-74.0060", 
         images=["https://i.pinimg.com/564x/66/23/ae/6623ae76a2b6c7ef5f760c0a2d2ca5e0.jpg", "https://i.pinimg.com/564x/1c/25/1b/1c251b42de9694ab195291a23e78ffc0.jpg"],
         videos=["https://www.youtube.com/watch?v=6T_PjEXlLBs"],
     )
 
-    red_flag2 = RedFlag(
+    red_flag2 = Record(
         title="Environmental Pollution",
+        Categoty="Intervention",
         description="Environmental pollution is a major issue affecting Africa.",
         user=user2,
         status=status2,
-        geolocation="34.0522,-118.2437",
+        location="Nairobi",
+        # geolocation="34.0522,-118.2437",
         images=["https://i.pinimg.com/564x/4a/e0/08/4ae00888c846d08973a5e915b05db5f7.jpg"],
         videos=["https://www.youtube.com/watch?v=pv_rUdeOP9g"],
     )
 
     
-    intervention1 = Intervention(
+    intervention1 = Record(
         title="Infrastructure Development",
         description="Lack of proper infrastructure is a pressing concern in Africa.",
         user=user1,
