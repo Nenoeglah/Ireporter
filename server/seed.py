@@ -14,10 +14,25 @@ def seed_data():
 
     
     red_flag1 = Record(
+
+def seed_data():
+   
+    user1 = User(username="Georgia", email="georgia@georgia.com", password="password1")
+    user2 = User(username="Ginny", email="ginny@ginny.com", password="password2")
+    user3 = User(username="Jace", email="jace@jace.com", password="password3")
+
+    
+    status1 = Status(name="Under Investigation")
+    status2 = Status(name="Resolved")
+    status3 = Status(name="Rejected")
+
+    
+    red_flag1 = RedFlag(
         title="Corruption in Government",
         description="This is a corruption incident in the government sector.",
         user=user1,
         status=status1,
+
         location="Nairobi",
         # geolocation="40.7128,-74.0060", 
         images=["https://i.pinimg.com/564x/66/23/ae/6623ae76a2b6c7ef5f760c0a2d2ca5e0.jpg", "https://i.pinimg.com/564x/1c/25/1b/1c251b42de9694ab195291a23e78ffc0.jpg"],
@@ -38,6 +53,7 @@ def seed_data():
 
     
     intervention1 = Record(
+
         title="Infrastructure Development",
         description="Lack of proper infrastructure is a pressing concern in Africa.",
         user=user1,
