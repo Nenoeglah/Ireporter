@@ -148,3 +148,19 @@ class RecordVideo(db.Model):
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
     #define relationship with records table
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
+
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    message = db.Column(db.Text)
+    created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
+    #define relationship with records table
+    record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
+
+class Geolocation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    location = db.Column(db.Text)
+    created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
+    updated_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
+    #define relationship with records table
+    record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
