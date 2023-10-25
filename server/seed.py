@@ -67,8 +67,8 @@ def seed_data():
     db.session.add(intervention2)
 
     
-#     db.session.commit()
+    db.session.commit()
 
-# if __name__ == '__main__':
-#     seed_data()
-#     print("Database seeded successfully.")
+if __name__ == '__main__':
+    seed_data()
+    print("Database seeded successfully.")
