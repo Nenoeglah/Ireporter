@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy, Column, Integer, String, Text, TIMESTAMP, ForeignKey
 from datetime import datetime
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.hybrid import hybrid_property
 #import bcrypt and db from config to prevent circular imports
@@ -17,6 +17,9 @@ class User(db.Model, SerializerMixin):
 
     # password stored to `_password_hash` to store hashed password
     password = db.Column(db.String, nullable = False)
+
+    #define relationship between users and records
+    records = relationship('Record', backref="user")
 
     @validates('username')
     def validate_username(self, key, value):
@@ -66,6 +69,9 @@ class Admin(db.Model, SerializerMixin):
      # password stored to `_password_hash` to store hashed password
     password = db.Column(db.String, nullable = False)
 
+    #define relationship between admin and records
+    records = relationship('Record', backref="admin")
+
     @validates('username')
     def validate_username(self, key, value):
         if not value:
@@ -111,10 +117,19 @@ class Record(db.Model, SerializerMixin):
     status = db.Column(db.String)
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
 
-    # define the relationship between user and admin table
+    # include foreign keys in the record table from user and admin
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'))
+
+    # define the relationship between records with all the other tables 
+    user = relationship(User, back_populates='records')
+    admin = relationship(Admin, back_populates='records')
     
+    record_images = relationship('RecordImage', backref='record')
+    record_videos = relationship('RecordVideo', backref='record')
+    notifications = relationship('Notification', backref='record')
+    geolocation = relationship('Geolocation', backref='record')
+
     def serialize(self):
         return {
             'id': self.id,
@@ -135,7 +150,6 @@ class Record(db.Model, SerializerMixin):
             raise ValueError("Description is required")
         return value
     
-
 class RecordImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image_url = db.Column(db.String)
