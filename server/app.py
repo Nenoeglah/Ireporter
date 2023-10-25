@@ -4,7 +4,7 @@ from config import db, app
 from models import User, Admin, Record, RecordImage, RecordVideo, Notification, Geolocation
 
 
-db.init_app(app)
+# db.init_app(app)
 
 @app.route('/records', methods=['GET', 'POST'])
 def records():

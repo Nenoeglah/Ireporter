@@ -63,8 +63,7 @@ def seed_data():
     db.session.add(geolocation2)
 
     # Commit changes to the database
+    
     db.session.commit()
-
-if __name__ == '__main__':
-    seed_data()
-    print("Database seeded successfully.")
+    
+print("🦸‍♀️ Database seeded successfully!")
