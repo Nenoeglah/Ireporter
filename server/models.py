@@ -7,8 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 
 #import bcrypt and db from config to prevent circular imports
-
-db =SQLAlchemy()
+from config import db, bcrypt
 
 
 
@@ -121,6 +120,7 @@ class Record(db.Model, SerializerMixin):
     description = db.Column(db.Text)
     status = db.Column(db.String)
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
+    location = db.Column(db.Text)
 
     # include foreign keys in the record table from user and admin
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
