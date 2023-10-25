@@ -138,6 +138,13 @@ class Record(db.Model, SerializerMixin):
 
 class RecordImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
     image_url = db.Column(db.String)
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
+    # define relationship with records table 
+    record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
+class RecordVideo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    video_url = db.Column(db.String)
+    created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
+    #define relationship with records table
+    record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
