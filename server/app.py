@@ -1,54 +1,50 @@
 from flask import Flask, make_response, jsonify, request, redirect, url_for
 from flask_migrate import Migrate
-from models import db
+from config import db, app
+from models import User, Admin, Record, RecordImage, RecordVideo, Notification, Geolocation
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-migrate = Migrate(app, db)
 
 db.init_app(app)
 
-@app.route('/reports')
-def reports():
-    reports_list = []
-    reports = Report.query.all()
-    for report in reports:
-        report_dict = {
-            "id": report.id,
-            "title": report.title,
-            "description": report.description,
-            "location": report.location,
-            "category": report.category
+@app.route('/records')
+def records():
+    records_list = []
+    records = Record.query.all()
+    for record in records:
+        record_dict = {
+            "id": record.id,
+            "title": record.title,
+            "description": record.description,
+            "location": record.location,
+            "category": record.category
         }
-        reports_list.append(report_dict)
-    response_body = reports_list
+        records_list.append(record_dict)
+    response_body = records_list
     response = make_response(jsonify(response_body), 200)
     return response
 
-@app.route('/reports/<int:id>', methods = ["GET", "DELETE"])
-def report_id(id):
-    report = Report.query.filter_by(id=id).first()
-    if report:
+@app.route('/records/<int:id>', methods = ["GET", "DELETE"])
+def record_id(id):
+    record = Record.query.filter_by(id=id).first()
+    if record:
         if request.method == "GET":
             response_body = {
-                "id": report.id,
-                "title": report.title,
-                "description": report.description,
-                "location": report.location,
-                "category": report.category
+                "id": record.id,
+                "title": record.title,
+                "description": record.description,
+                "location": record.location,
+                "category": record.category
             }
             response = make_response(jsonify(response_body), 200)
 
         elif response.method == "DELETE":
-            db.session.delete(report)
+            db.session.delete(record)
             db.session.commit()
-            response_body = {"message": "Report deleted!"}
+            response_body = {"message": "Record deleted!"}
             response = make_response(response_body, 200)
 
     else:
-        response_body = {"error": "Report not found"}
+        response_body = {"error": "Record not found"}
         response = make_response(jsonify(response_body))
 
     return response
