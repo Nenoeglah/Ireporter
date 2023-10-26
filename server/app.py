@@ -303,5 +303,29 @@ def record_image(id):
 
     return response
 
+@app.route('/record_videos/<int:id>', methods = ["GET", "DELETE"])
+def record_video(id):
+    record_video = RecordVideo.query.filter_by(id=id).first()
+    if record_video:
+        if request.method == "GET":
+            response_body = {
+                "id": record_video.id,
+                "video_url": record_video.video_url,
+                "record_id": record_video.record_id
+            }
+            response = make_response(jsonify(response_body), 200)
+
+        elif response.method == "DELETE":
+            db.session.delete(record_video)
+            db.session.commit()
+            response_body = {"message": "Record video deleted!"}
+            response = make_response(response_body, 200)
+
+    else:
+        response_body = {"error": "Record video not found"}
+        response = make_response(jsonify(response_body), 404)
+
+    return response
+
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
