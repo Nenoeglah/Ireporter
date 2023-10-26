@@ -1,12 +1,20 @@
 
-
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey
+
+
+
+
 from datetime import datetime
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.hybrid import hybrid_property
+
+
+
+#import bcrypt and db from config to prevent circular imports
 from config import db, bcrypt
+
 
 
 class User(db.Model, SerializerMixin):
@@ -170,4 +178,5 @@ class Geolocation(db.Model):
     location = db.Column(db.Text)
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
     updated_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
+    #define relationship with records table
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))

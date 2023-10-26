@@ -15,7 +15,7 @@ def records():
             record_dict = {
                 "id": record.id,
                 "type": record.type,
-                # "category": record.category,
+                "category": record.category,
                 "description": record.description,
                 "location": record.location,
                 "status": record.status,
@@ -29,11 +29,11 @@ def records():
         data = request.get_json()
         if data:
             user_id = data.get('user_id')
-            type = data.get('type')
+            category = data.get('category')
             description = data.get('description')
             location = data.get('location')
             status = data.get('status')
-            new_record = Record(user_id=user_id, type=type, description=description, location=location, status=status)
+            new_record = Record(user_id=user_id, category=category, description=description, location=location, status=status)
             
             db.session.add(new_record)
             db.session.commit()
