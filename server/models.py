@@ -1,3 +1,4 @@
+import bcrypt
 from flask_sqlalchemy import SQLAlchemy, Column, Integer, String, Text, TIMESTAMP, ForeignKey
 from datetime import datetime
 from sqlalchemy.orm import validates, relationship
