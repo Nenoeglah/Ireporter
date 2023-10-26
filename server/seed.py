@@ -63,6 +63,7 @@ def seed_data():
     db.session.add(geolocation2)
 
     # Commit changes to the database
+    
     db.session.commit()
     
 print("🦸‍♀️ Database seeded successfully!")
