@@ -1,21 +1,12 @@
-
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey
-
-
-
-
+import bcrypt
+from flask_sqlalchemy import SQLAlchemy, Column, Integer, String, Text, TIMESTAMP, ForeignKey
 from datetime import datetime
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.hybrid import hybrid_property
-
-
-
 #import bcrypt and db from config to prevent circular imports
-from config import db, bcrypt
 
-
+db =SQLAlchemy()
 
 # create user table with validations 
 class User(db.Model, SerializerMixin):
@@ -125,9 +116,7 @@ class Record(db.Model, SerializerMixin):
     category = db.Column(db.String)
     description = db.Column(db.Text)
     status = db.Column(db.String)
-    type = db.Column(db.String)
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
-    location = db.Column(db.Text)
 
     # include foreign keys in the record table from user and admin
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
