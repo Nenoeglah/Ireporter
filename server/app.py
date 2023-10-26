@@ -110,7 +110,7 @@ def login():
         return jsonify({'error': 'User not found'}), 404
 
     if user is None or not user.authenticate(password):
-        return jsonify({'error': 'Invalid credentials'}), 404
+        return jsonify({'error': 'Invalid credentials'}), 401
 
     session['user_id'] = user.id
     return jsonify({'message': 'Logged in successfully!'}), 200
