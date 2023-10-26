@@ -102,11 +102,11 @@ def login():
     password = data.get('password')
 
     if not email or not password:
-        return jsonify({'error': 'Invalid credentials'}), 404
+        return jsonify({'error': 'Invalid credentials'}), 401
 
     user = User.query.filter(User.email == email).first()
 
-    if not User:
+    if not user:
         return jsonify({'error': 'User not found'}), 404
 
     if user is None or not user.authenticate(password):
