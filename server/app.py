@@ -183,5 +183,38 @@ def geolocation():
             response = make_response(response_body)
     return response
 
+@app.route('/notifications', methods=['GET', 'POST'])
+def geolocation():
+    if request.method == 'GET':
+        notifications_list = []
+        notifications = Notification.query.all()
+        for notification in notifications:
+            notification_dict = {
+                "id": notification.id,
+                "message": notification.message,
+                "user_id": notification.user_id,
+                "record_id": notification.record_id
+            }
+            notifications_list.append(notification_dict)
+        response_body = notifications_list
+        response = make_response(jsonify(response_body), 200)
+    elif request.method == 'POST':
+        data = request.get_json()
+        if data:
+            notification = data.get('notification')
+            user_id = data.get('user_id')
+            record_id = data.get('record_id')
+            new_notification = Notification(notification=notification, record_id=record_id, user_id=user_id)
+            
+            db.session.add(new_notification)
+            db.session.commit()
+            response_body = {"message": "Notification created successfully!"}
+            response = make_response(response_body, 200)
+        else:
+            response_body = {"message": "Input valid data!"}
+            response = make_response(response_body)
+    return response
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
