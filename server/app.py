@@ -245,5 +245,35 @@ def record_images():
             response = make_response(response_body)
     return response
 
+@app.route('/record_videos', methods=['GET', 'POST'])
+def record_videos():
+    if request.method == 'GET':
+        videos_list = []
+        videos = RecordVideo.query.all()
+        for video in videos:
+            video_dict = {
+                "id": video.id,
+                "video_url": video.video_url,
+                "record_id": video.record_id
+            }
+            videos_list.append(video_dict)
+        response_body = videos_list
+        response = make_response(jsonify(response_body), 200)
+    elif request.method == 'POST':
+        data = request.get_json()
+        if data:
+            video_url = data.get('video_url')
+            record_id = data.get('record_id')
+            new_video = RecordVideo(video_url=video_url, record_id=record_id)
+            
+            db.session.add(new_video)
+            db.session.commit()
+            response_body = {"message": "Video created successfully!"}
+            response = make_response(response_body, 200)
+        else:
+            response_body = {"message": "Input valid data!"}
+            response = make_response(response_body)
+    return response
+
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
