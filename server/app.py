@@ -96,7 +96,7 @@ def signup():
 def login():
     data = request.get_json()
     if not data:
-        return jsonify({'error': 'Invalid JSON data'}), 404
+        return jsonify({'error': 'Input the required fields'}), 404
 
     email = data.get('email')
     password = data.get('password')
@@ -105,6 +105,9 @@ def login():
         return jsonify({'error': 'Invalid credentials'}), 404
 
     user = User.query.filter(User.email == email).first()
+
+    if not User:
+        return jsonify({'error': 'User not found'}), 404
 
     if user is None or not user.authenticate(password):
         return jsonify({'error': 'Invalid credentials'}), 404
