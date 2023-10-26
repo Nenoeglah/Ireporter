@@ -1,12 +1,21 @@
-import bcrypt
-from flask_sqlalchemy import SQLAlchemy, Column, Integer, String, Text, TIMESTAMP, ForeignKey
+
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey
+
+
+
+
 from datetime import datetime
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.hybrid import hybrid_property
-#import bcrypt and db from config to prevent circular imports
 
-db =SQLAlchemy()
+
+
+#import bcrypt and db from config to prevent circular imports
+from config import db, bcrypt
+
+
 
 # create user table with validations 
 class User(db.Model, SerializerMixin):
@@ -20,7 +29,7 @@ class User(db.Model, SerializerMixin):
     password = db.Column(db.String, nullable = False)
 
     #define relationship between users and records
-    records = relationship('Record', backref="user")
+    records = relationship('Record', backref="user_records") # Changed user to usr_records to fix'sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.records': property of that name exists on mapper 'Mapper[Record(record)]''
 
     @validates('username')
     def validate_username(self, key, value):
@@ -71,7 +80,7 @@ class Admin(db.Model, SerializerMixin):
     password = db.Column(db.String, nullable = False)
 
     #define relationship between admin and records
-    records = relationship('Record', backref="admin")
+    records = relationship('Record', backref="admin_records") #Changed admin to admin_records to fix the error 'sqlalchemy.exc.ArgumentError: Error creating backref 'admin' on relationship 'Admin.records': property of that name exists on mapper 'Mapper[Record(record)]''
 
     @validates('username')
     def validate_username(self, key, value):
@@ -116,7 +125,9 @@ class Record(db.Model, SerializerMixin):
     category = db.Column(db.String)
     description = db.Column(db.Text)
     status = db.Column(db.String)
+    type = db.Column(db.String)
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
+    location = db.Column(db.Text)
 
     # include foreign keys in the record table from user and admin
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
