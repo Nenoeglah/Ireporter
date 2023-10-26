@@ -6,7 +6,7 @@ from models import User, Admin, Record, RecordImage, RecordVideo, Notification, 
 
 # db.init_app(app)
 
-@app.route('/records')
+@app.route('/records', methods=['GET', 'POST'])
 def records():
     if request.method == 'GET':
         records_list = []
@@ -116,13 +116,72 @@ def check_session():
         return jsonify(user.to_dict())
     else:
         return jsonify({'error': 'Invalid credentials'}), 204
-    
+
+
+# Logout route for both user and Admin
 @app.route('/logout', methods=['DELETE'])
 def logout():
     # Clear the user_id session variable to log the user out
     session.pop('user_id', None)
     return jsonify({'message': 'Logged out successfully'}), 200
 
+@app.route('/admin/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    if not data:
+        return jsonify({'error': 'Invalid JSON data'}), 404
+
+    email = data.get('email')
+    password = data.get('password')
+
+    if not email or not password:
+        return jsonify({'error': 'Invalid credentials'}), 404
+
+    admin = Admin.query.filter(Admin.email == email).first()
+
+    if admin is None or not admin.authenticate(password):
+        return jsonify({'error': 'Invalid credentials'}), 404
+
+    session['user_id'] = admin.id
+    return jsonify({'message': 'Logged in successfully!'}), 200
+
+@app.route('/check_session')
+def check_session():
+    admin = Admin.query.filter(Admin.id == session.get('user_id')).first()
+    if admin:
+        return jsonify(admin.to_dict())
+    else:
+        return jsonify({'error': 'Invalid credentials'}), 204
+    
+@app.route('/geolocations', methods=['GET', 'POST'])
+def geolocation():
+    if request.method == 'GET':
+        geolocations_list = []
+        geolocations = Geolocation.query.all()
+        for geolocation in geolocations:
+            geolocation_dict = {
+                "id": geolocation.id,
+                "location": geolocation.location,
+                "record_id": geolocation.record_id
+            }
+            geolocations_list.append(geolocation_dict)
+        response_body = geolocations_list
+        response = make_response(jsonify(response_body), 200)
+    elif request.method == 'POST':
+        data = request.get_json()
+        if data:
+            location = data.get('location')
+            record_id = data.get('record_id')
+            new_geolocation = Geolocation(location=location, record_id=record_id)
+            
+            db.session.add(new_geolocation)
+            db.session.commit()
+            response_body = {"message": "Geolocation created successfully!"}
+            response = make_response(response_body, 200)
+        else:
+            response_body = {"message": "Input valid data!"}
+            response = make_response(response_body)
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
