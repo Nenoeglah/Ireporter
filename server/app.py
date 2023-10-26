@@ -184,7 +184,7 @@ def geolocation():
     return response
 
 @app.route('/notifications', methods=['GET', 'POST'])
-def geolocation():
+def notification():
     if request.method == 'GET':
         notifications_list = []
         notifications = Notification.query.all()
@@ -215,6 +215,35 @@ def geolocation():
             response = make_response(response_body)
     return response
 
+@app.route('/record_images', methods=['GET', 'POST'])
+def record_images():
+    if request.method == 'GET':
+        images_list = []
+        images = RecordImage.query.all()
+        for image in images:
+            image_dict = {
+                "id": image.id,
+                "image_url": image.image_url,
+                "record_id": image.record_id
+            }
+            images_list.append(image_dict)
+        response_body = images_list
+        response = make_response(jsonify(response_body), 200)
+    elif request.method == 'POST':
+        data = request.get_json()
+        if data:
+            image_url = data.get('image_url')
+            record_id = data.get('record_id')
+            new_image = RecordImage(image_url=image_url, record_id=record_id)
+            
+            db.session.add(new_image)
+            db.session.commit()
+            response_body = {"message": "Image created successfully!"}
+            response = make_response(response_body, 200)
+        else:
+            response_body = {"message": "Input valid data!"}
+            response = make_response(response_body)
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
