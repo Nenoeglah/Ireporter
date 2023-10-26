@@ -14,10 +14,13 @@ def records():
         for record in records:
             record_dict = {
                 "id": record.id,
+                "type": record.type,
                 "category": record.category,
                 "description": record.description,
                 "location": record.location,
-                "status": record.status
+                "status": record.status,
+                "user_id": record.user_id,
+                "admin_id": record.admin_id
             }
             records_list.append(record_dict)
         response_body = records_list
@@ -25,11 +28,12 @@ def records():
     elif request.method == 'POST':
         data = request.get_json()
         if data:
+            user_id = data.get('user_id')
             category = data.get('category')
             description = data.get('description')
             location = data.get('location')
             status = data.get('status')
-            new_record = Record(category=category, description=description, location=location, status=status)
+            new_record = Record(user_id=user_id, category=category, description=description, location=location, status=status)
             
             db.session.add(new_record)
             db.session.commit()
@@ -126,7 +130,7 @@ def logout():
     return jsonify({'message': 'Logged out successfully'}), 200
 
 @app.route('/admin/login', methods=['POST'])
-def login():
+def Admin_login():
     data = request.get_json()
     if not data:
         return jsonify({'error': 'Invalid JSON data'}), 404
@@ -146,7 +150,7 @@ def login():
     return jsonify({'message': 'Logged in successfully!'}), 200
 
 @app.route('/check_session')
-def check_session():
+def admin_check_session():
     admin = Admin.query.filter(Admin.id == session.get('user_id')).first()
     if admin:
         return jsonify(admin.to_dict())
