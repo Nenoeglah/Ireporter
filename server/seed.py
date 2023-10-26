@@ -1,4 +1,4 @@
-from app import db
+from config import db
 from models import User, Admin, Record, RecordImage, RecordVideo, Notification, Geolocation
 
 def seed_data():
