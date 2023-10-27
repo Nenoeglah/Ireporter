@@ -135,8 +135,8 @@ class Record(db.Model, SerializerMixin):
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'))
 
     # define the relationship between records with all the other tables 
-    user = relationship(User, back_populates='records')
-    admin = relationship(Admin, back_populates='records')
+    user = relationship(User, back_populates='records', overlaps="user_records")
+    admin = relationship(Admin, back_populates='records', overlaps="admin_records")
     
     record_images = relationship('RecordImage', backref='record')
     record_videos = relationship('RecordVideo', backref='record')
@@ -152,13 +152,13 @@ class Record(db.Model, SerializerMixin):
         }
     
     @validates('category')
-    def validate_category(self, value):
+    def validate_category(self, key, value):
         if not value:
             raise ValueError("Choose a category!")
         return value
     
     @validates('description')
-    def validate_description(self, value):
+    def validate_description(self, key, value):
         if not value:
             raise ValueError("Description is required")
         return value
