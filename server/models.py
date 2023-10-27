@@ -143,7 +143,7 @@ class Record(db.Model, SerializerMixin):
         }
     
     @validates('category')
-    def validate_category(self, value):
+    def validate_category(self, key, value):
         if not value:
             raise ValueError("Choose a category!")
         return value

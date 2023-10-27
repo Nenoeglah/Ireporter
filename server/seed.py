@@ -5,14 +5,14 @@ from app import app
 def seed_data():
     # Create user accounts
     users = [
-        {"id": 1, "username": "Georgia", "password": "password1", "phone_number": "+254 723456789", "email": "georgia@georgia.com"},
-        {"id": 2, "username": "Ginny", "password": "password2", "phone_number": "+254 787654321", "email": "ginny@ginny.com"},
-        {"id": 3, "username": "Jace", "password": "password3", "phone_number": "+254 79876543", "email": "jace@jace.com"},
+        {"id": 1, "username": "Georgia", "_password_hash": "password1", "phone_number": "+254 723456789", "email": "georgia@georgia.com"},
+        {"id": 2, "username": "Ginny", "_password_hash": "password2", "phone_number": "+254 787654321", "email": "ginny@ginny.com"},
+        {"id": 3, "username": "Jace", "_password_hash": "password3", "phone_number": "+254 79876543", "email": "jace@jace.com"},
     ]
 
     # Create admin account
     admin = [
-        {"id": 1, "username": "Kityy", "password": "adminpassword", "phone_number": "+254 711121314", "email": "kitty@kitty.com"},
+        {"id": 1, "username": "Kityy", "_password_hash": "adminpassword", "phone_number": "+254 711121314", "email": "kitty@kitty.com"},
     ]
 
     # Create records
@@ -24,6 +24,7 @@ def seed_data():
             "location": "Nairobi",
             "type": "Red Flag",
             "status": "Under Investigation",
+            "category": "Goverment sector",
             "description": "This is a corruption incident in the government sector.",
         },
         {
@@ -33,6 +34,7 @@ def seed_data():
             "location": "Nairobi",
             "type": "Intervention",
             "status": "Resolved",
+            "category": "Environmental pollution",
             "description": "Environmental pollution is a major issue affecting Africa.",
         },
     ]

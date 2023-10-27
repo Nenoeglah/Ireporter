@@ -1,16 +1,8 @@
-<<<<<<<< HEAD:server/migrations/versions/6e8beeffde7a_.py
 """empty message
 
-Revision ID: 6e8beeffde7a
+Revision ID: 899361146728
 Revises: 
-Create Date: 2023-10-27 09:24:52.508536
-========
-"""Created models
-
-Revision ID: 44d386af746b
-Revises: 
-Create Date: 2023-10-27 00:10:53.190060
->>>>>>>> 3faed91 (Fixed table column(password)):server/migrations/versions/44d386af746b_created_models.py
+Create Date: 2023-10-27 19:28:53.484919
 
 """
 from alembic import op
@@ -18,11 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-<<<<<<<< HEAD:server/migrations/versions/6e8beeffde7a_.py
-revision = '6e8beeffde7a'
-========
-revision = '44d386af746b'
->>>>>>>> 3faed91 (Fixed table column(password)):server/migrations/versions/44d386af746b_created_models.py
+revision = '899361146728'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,7 +24,7 @@ def upgrade():
     sa.Column('phone_number', sa.String(length=10), nullable=True),
     sa.Column('email', sa.String(), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), nullable=True),
-    sa.Column('password', sa.String(), nullable=False),
+    sa.Column('_password_hash', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
