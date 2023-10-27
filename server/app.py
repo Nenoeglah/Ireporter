@@ -245,6 +245,31 @@ def notification():
             response = make_response(response_body)
     return response
 
+@app.route('/notifications/<int:id>', methods = ["GET", "DELETE"])
+def notification_by_id(id):
+    notification = Notification.query.filter_by(id=id).first()
+    if notification:
+        if request.method == "GET":
+            response_body = {
+                "id": notification.id,
+                "message": notification.message,
+                "record_id": notification.record_id,
+                "user_id": notification.user_id
+            }
+            response = make_response(jsonify(response_body), 200)
+
+        elif request.method == "DELETE":
+            db.session.delete(notification)
+            db.session.commit()
+            response_body = {"message": "Notification deleted!"}
+            response = make_response(response_body, 200)
+
+    else:
+        response_body = {"error": "Notification not found"}
+        response = make_response(jsonify(response_body), 404)
+
+    return response
+
 @app.route('/record_images', methods=['GET', 'POST'])
 def record_images():
     if request.method == 'GET':
