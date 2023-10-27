@@ -58,7 +58,7 @@ def record_id(id):
             }
             response = make_response(jsonify(response_body), 200)
 
-        elif response.method == "DELETE":
+        elif request.method == "DELETE":
             db.session.delete(record)
             db.session.commit()
             response_body = {"message": "Record deleted!"}
