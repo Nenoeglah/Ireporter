@@ -65,7 +65,8 @@ class Admin(db.Model, SerializerMixin):
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
 
      # password stored to `_password_hash` to store hashed password
-    password = db.Column(db.String, nullable = False)
+    _password_hash = db.Column(db.String, nullable = False) # Changed password to _password_hash for successful hashing
+
 
     #define relationship between admin and records
     records = relationship('Record', backref="admin_records") #Changed admin to admin_records to fix the error 'sqlalchemy.exc.ArgumentError: Error creating backref 'admin' on relationship 'Admin.records': property of that name exists on mapper 'Mapper[Record(record)]''
