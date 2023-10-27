@@ -201,7 +201,7 @@ def geolocation_by_id(id):
             }
             response = make_response(jsonify(response_body), 200)
 
-        elif response.method == "DELETE":
+        elif request.method == "DELETE":
             db.session.delete(geolocation)
             db.session.commit()
             response_body = {"message": "Geolocation deleted!"}
@@ -317,7 +317,7 @@ def record_image(id):
             }
             response = make_response(jsonify(response_body), 200)
 
-        elif response.method == "DELETE":
+        elif request.method == "DELETE":
             db.session.delete(record_image)
             db.session.commit()
             response_body = {"message": "Record image deleted!"}
@@ -341,7 +341,7 @@ def record_video(id):
             }
             response = make_response(jsonify(response_body), 200)
 
-        elif response.method == "DELETE":
+        elif request.method == "DELETE":
             db.session.delete(record_video)
             db.session.commit()
             response_body = {"message": "Record video deleted!"}
