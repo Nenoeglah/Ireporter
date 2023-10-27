@@ -15,7 +15,7 @@ def records():
             record_dict = {
                 "id": record.id,
                 "type": record.type,
-                "category": record.category,
+                # "category": record.category,
                 "description": record.description,
                 "location": record.location,
                 "status": record.status,
@@ -29,11 +29,11 @@ def records():
         data = request.get_json()
         if data:
             user_id = data.get('user_id')
-            category = data.get('category')
+            type = data.get('type')
             description = data.get('description')
             location = data.get('location')
             status = data.get('status')
-            new_record = Record(user_id=user_id, category=category, description=description, location=location, status=status)
+            new_record = Record(user_id=user_id, type=type, description=description, location=location, status=status)
             
             db.session.add(new_record)
             db.session.commit()
@@ -67,7 +67,7 @@ def record_id(id):
 
     else:
         response_body = {"error": "Record not found"}
-        response = make_response(jsonify(response_body))
+        response = make_response(jsonify(response_body), 404)
 
     return response
 
@@ -96,18 +96,21 @@ def signup():
 def login():
     data = request.get_json()
     if not data:
-        return jsonify({'error': 'Invalid JSON data'}), 404
+        return jsonify({'error': 'Input the required fields'}), 404
 
     email = data.get('email')
     password = data.get('password')
 
     if not email or not password:
-        return jsonify({'error': 'Invalid credentials'}), 404
+        return jsonify({'error': 'Invalid credentials'}), 401
 
     user = User.query.filter(User.email == email).first()
 
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
     if user is None or not user.authenticate(password):
-        return jsonify({'error': 'Invalid credentials'}), 404
+        return jsonify({'error': 'Invalid credentials'}), 401
 
     session['user_id'] = user.id
     return jsonify({'message': 'Logged in successfully!'}), 200
@@ -277,6 +280,54 @@ def record_videos():
         else:
             response_body = {"message": "Input valid data!"}
             response = make_response(response_body)
+    return response
+
+@app.route('/record_images/<int:id>', methods = ["GET", "DELETE"])
+def record_image(id):
+    record_image = RecordImage.query.filter_by(id=id).first()
+    if record_image:
+        if request.method == "GET":
+            response_body = {
+                "id": record_image.id,
+                "image_url": record_image.image_url,
+                "record_id": record_image.record_id
+            }
+            response = make_response(jsonify(response_body), 200)
+
+        elif response.method == "DELETE":
+            db.session.delete(record_image)
+            db.session.commit()
+            response_body = {"message": "Record image deleted!"}
+            response = make_response(response_body, 200)
+
+    else:
+        response_body = {"error": "Record image not found"}
+        response = make_response(jsonify(response_body), 404)
+
+    return response
+
+@app.route('/record_videos/<int:id>', methods = ["GET", "DELETE"])
+def record_video(id):
+    record_video = RecordVideo.query.filter_by(id=id).first()
+    if record_video:
+        if request.method == "GET":
+            response_body = {
+                "id": record_video.id,
+                "video_url": record_video.video_url,
+                "record_id": record_video.record_id
+            }
+            response = make_response(jsonify(response_body), 200)
+
+        elif response.method == "DELETE":
+            db.session.delete(record_video)
+            db.session.commit()
+            response_body = {"message": "Record video deleted!"}
+            response = make_response(response_body, 200)
+
+    else:
+        response_body = {"error": "Record video not found"}
+        response = make_response(jsonify(response_body), 404)
+
     return response
 
 if __name__ == '__main__':
