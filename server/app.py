@@ -190,6 +190,30 @@ def geolocation():
             response = make_response(response_body)
     return response
 
+@app.route('/geolocations/<int:id>', methods = ["GET", "DELETE"])
+def geolocation_by_id(id):
+    geolocation = Geolocation.query.filter_by(id=id).first()
+    if geolocation:
+        if request.method == "GET":
+            response_body = {
+                "id": geolocation.id,
+                "location": geolocation.location,
+                "record_id": geolocation.record_id
+            }
+            response = make_response(jsonify(response_body), 200)
+
+        elif response.method == "DELETE":
+            db.session.delete(geolocation)
+            db.session.commit()
+            response_body = {"message": "Geolocation deleted!"}
+            response = make_response(response_body, 200)
+
+    else:
+        response_body = {"error": "Geolocation not found"}
+        response = make_response(jsonify(response_body), 404)
+
+    return response
+
 @app.route('/notifications', methods=['GET', 'POST'])
 def notification():
     if request.method == 'GET':
