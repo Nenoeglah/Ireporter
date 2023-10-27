@@ -51,7 +51,6 @@ def record_id(id):
         if request.method == "GET":
             response_body = {
                 "id": record.id,
-                "title": record.title,
                 "description": record.description,
                 "location": record.location,
                 "category": record.category,
