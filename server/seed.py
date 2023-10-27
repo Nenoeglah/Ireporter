@@ -92,7 +92,7 @@ def seed_data():
 
     db.session.commit()
 
-# if __name__ == '__main__':
-#     with app.app_context():
-#         seed_data()
+if __name__ == '__main__':
+    with app.app_context():
+        seed_data()
 print("Database seeded successfully.")
