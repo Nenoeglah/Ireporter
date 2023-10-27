@@ -29,7 +29,7 @@ class User(db.Model, SerializerMixin):
     password = db.Column(db.String, nullable = False)
 
     #define relationship between users and records
-    records = relationship('Record', backref="user")
+    records = relationship('Record', backref="user_records") # Changed user to usr_records to fix'sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.records': property of that name exists on mapper 'Mapper[Record(record)]''
 
     @validates('username')
     def validate_username(self, key, value):
@@ -80,7 +80,7 @@ class Admin(db.Model, SerializerMixin):
     password = db.Column(db.String, nullable = False)
 
     #define relationship between admin and records
-    records = relationship('Record', backref="admin")
+    records = relationship('Record', backref="admin_records") #Changed admin to admin_records to fix the error 'sqlalchemy.exc.ArgumentError: Error creating backref 'admin' on relationship 'Admin.records': property of that name exists on mapper 'Mapper[Record(record)]''
 
     @validates('username')
     def validate_username(self, key, value):
