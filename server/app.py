@@ -96,6 +96,33 @@ def record_id(id):
 
     return response
 
+@app.route('/admin/records/<int:id>', methods = ["PATCH"])
+def admin_record_id(id):
+    record = Record.query.filter_by(id=id).first()
+    if record:
+        data = request.get_json()
+        if data:
+            record = db.session.get(Record, id)
+            # Check if the record exists
+            if record:
+                # Get the data being sent
+                status = data.get('status')
+
+                # Updating attributes in the db
+                if status is not None:
+                    record.status = status
+
+                db.session.commit()
+                response_body = {'message': 'Status updated successfully'}
+                response = make_response(response_body, 200)
+
+    else:
+        response_body = {"error": "Record not found"}
+        response = make_response(jsonify(response_body), 404)
+
+    return response
+
+
 @app.route('/register', methods=['POST'])
 def signup():
     data = request.get_json()
