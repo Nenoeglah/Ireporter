@@ -44,7 +44,7 @@ def records():
             response = make_response(response_body)
     return response
 
-@app.route('/records/<int:id>', methods = ["GET", "DELETE"])
+@app.route('/records/<int:id>', methods = ["GET", "DELETE", "PATCH"])
 def record_id(id):
     record = Record.query.filter_by(id=id).first()
     if record:
@@ -63,6 +63,32 @@ def record_id(id):
             db.session.commit()
             response_body = {"message": "Record deleted!"}
             response = make_response(response_body, 200)
+
+        elif request.method == "PATCH":
+            data = request.get_json()
+            if data:
+                record = db.session.get(Record, id)
+                # Check if the record exists
+                if record:
+                    # Get the data being sent
+                    category = data.get('category')
+                    location = data.get('location')
+                    description = data.get('description')
+                    type = data.get('type')
+
+                    # Updating attributes in the db
+                    if category is not None:
+                        record.category = category
+                    if location is not None:
+                        record.location = location
+                    if description is not None:
+                        record.description = description
+                    if type is not None:
+                        record.type = type
+
+                    db.session.commit()
+                    response_body = {'message': 'Record updated successfully'}
+                    response = make_response(response_body, 200)
 
     else:
         response_body = {"error": "Record not found"}
@@ -121,7 +147,7 @@ def check_session():
     if user:
         return jsonify(user.to_dict())
     else:
-        return jsonify({'error': 'Invalid credentials'}), 204
+        return jsonify({'error': 'Not Logged in!'}), 204
 
 
 # Logout route for both user and Admin
@@ -151,7 +177,7 @@ def Admin_login():
     session['user_id'] = admin.id
     return jsonify({'message': 'Logged in successfully!'}), 200
 
-@app.route('/check_session')
+@app.route('/admin/check_session')
 def admin_check_session():
     admin = Admin.query.filter(Admin.id == session.get('user_id')).first()
     if admin:
