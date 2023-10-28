@@ -38,7 +38,7 @@ def records():
             db.session.add(new_record)
             db.session.commit()
             response_body = {"message": "Record created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input all the required fields!"}
             response = make_response(response_body)
@@ -87,7 +87,7 @@ def signup():
 
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({'message': 'User created successfully'}), 200
+        return jsonify({'message': 'User created successfully'}), 201
     else:
         return jsonify({'error': 'Invalid data'}), 401
 
@@ -183,7 +183,7 @@ def geolocation():
             db.session.add(new_geolocation)
             db.session.commit()
             response_body = {"message": "Geolocation created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input valid data!"}
             response = make_response(response_body)
@@ -239,7 +239,7 @@ def notification():
             db.session.add(new_notification)
             db.session.commit()
             response_body = {"message": "Notification created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input valid data!"}
             response = make_response(response_body)
@@ -294,7 +294,7 @@ def record_images():
             db.session.add(new_image)
             db.session.commit()
             response_body = {"message": "Image created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input valid data!"}
             response = make_response(response_body)
@@ -324,7 +324,7 @@ def record_videos():
             db.session.add(new_video)
             db.session.commit()
             response_body = {"message": "Video created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input valid data!"}
             response = make_response(response_body)
