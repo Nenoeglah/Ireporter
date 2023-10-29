@@ -138,6 +138,33 @@ def user_records():
 
     return response
 
+# Get all the records of a specific admin
+@app.route('/admin/records')
+def admin_records():
+    admin = Admin.query.filter(Admin.id == session.get('admin_id')).first()
+    if admin:
+        records_list = []
+        records = Record.query.filter(Record.admin_id == admin.id).all()
+        for record in records:
+            record_dict = {
+                "id": record.id,
+                "type": record.type,
+                # "category": record.category,
+                "description": record.description,
+                "location": record.location,
+                "status": record.status,
+                "user_id": record.user_id,
+                "admin_id": record.admin_id
+            }
+            records_list.append(record_dict)
+        response_body = records_list
+        response = make_response(jsonify(response_body), 200)
+    else:
+        response_body = {"error": "Log in to view your records!"}
+        response = make_response(jsonify(response_body), 401)
+
+    return response
+
 @app.route('/admin/records/<int:id>', methods = ["PATCH"])
 def admin_record_id(id):
     record = Record.query.filter_by(id=id).first()
