@@ -99,26 +99,33 @@ def record_id(id):
 @app.route('/admin/records/<int:id>', methods = ["PATCH"])
 def admin_record_id(id):
     record = Record.query.filter_by(id=id).first()
-    if record:
-        data = request.get_json()
-        if data:
-            record = db.session.get(Record, id)
-            # Check if the record exists
-            if record:
-                # Get the data being sent
-                status = data.get('status')
+    admin = Admin.query.filter(Admin.id == session.get('admin_id')).first()
+    if admin:
+        if record:
+            data = request.get_json()
+            if data:
+                record = db.session.get(Record, id)
+                # Check if the record exists
+                if record:
+                    # Get the data being sent
+                    status = data.get('status')
 
-                # Updating attributes in the db
-                if status is not None:
-                    record.status = status
+                    # Updating attributes in the db
+                    if status is not None:
+                        record.status = status
+                        record.admin_id = admin.id
 
-                db.session.commit()
-                response_body = {'message': 'Status updated successfully'}
-                response = make_response(response_body, 200)
+                    db.session.commit()
+                    response_body = {'message': 'Status updated successfully'}
+                    response = make_response(response_body, 200)
+
+        else:
+            response_body = {"error": "Record not found"}
+            response = make_response(jsonify(response_body), 404)
 
     else:
-        response_body = {"error": "Record not found"}
-        response = make_response(jsonify(response_body), 404)
+        response_body = {"error": "Unauthorized!"}
+        response = make_response(jsonify(response_body), 401)
 
     return response
 
@@ -201,12 +208,12 @@ def Admin_login():
     if admin is None or not admin.authenticate(password):
         return jsonify({'error': 'Invalid credentials'}), 404
 
-    session['user_id'] = admin.id
+    session['admin_id'] = admin.id
     return jsonify({'message': 'Logged in successfully!'}), 200
 
 @app.route('/admin/check_session')
 def admin_check_session():
-    admin = Admin.query.filter(Admin.id == session.get('user_id')).first()
+    admin = Admin.query.filter(Admin.id == session.get('admin_id')).first()
     if admin:
         return jsonify(admin.to_dict())
     else:
@@ -430,6 +437,7 @@ def record_video(id):
         response = make_response(jsonify(response_body), 404)
 
     return response
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
