@@ -38,20 +38,19 @@ def records():
             db.session.add(new_record)
             db.session.commit()
             response_body = {"message": "Record created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input all the required fields!"}
             response = make_response(response_body)
     return response
 
-@app.route('/records/<int:id>', methods = ["GET", "DELETE"])
+@app.route('/records/<int:id>', methods = ["GET", "DELETE", "PATCH"])
 def record_id(id):
     record = Record.query.filter_by(id=id).first()
     if record:
         if request.method == "GET":
             response_body = {
                 "id": record.id,
-                "title": record.title,
                 "description": record.description,
                 "location": record.location,
                 "category": record.category,
@@ -59,17 +58,70 @@ def record_id(id):
             }
             response = make_response(jsonify(response_body), 200)
 
-        elif response.method == "DELETE":
+        elif request.method == "DELETE":
             db.session.delete(record)
             db.session.commit()
             response_body = {"message": "Record deleted!"}
             response = make_response(response_body, 200)
+
+        elif request.method == "PATCH":
+            data = request.get_json()
+            if data:
+                record = db.session.get(Record, id)
+                # Check if the record exists
+                if record:
+                    # Get the data being sent
+                    category = data.get('category')
+                    location = data.get('location')
+                    description = data.get('description')
+                    type = data.get('type')
+
+                    # Updating attributes in the db
+                    if category is not None:
+                        record.category = category
+                    if location is not None:
+                        record.location = location
+                    if description is not None:
+                        record.description = description
+                    if type is not None:
+                        record.type = type
+
+                    db.session.commit()
+                    response_body = {'message': 'Record updated successfully'}
+                    response = make_response(response_body, 200)
 
     else:
         response_body = {"error": "Record not found"}
         response = make_response(jsonify(response_body), 404)
 
     return response
+
+@app.route('/admin/records/<int:id>', methods = ["PATCH"])
+def admin_record_id(id):
+    record = Record.query.filter_by(id=id).first()
+    if record:
+        data = request.get_json()
+        if data:
+            record = db.session.get(Record, id)
+            # Check if the record exists
+            if record:
+                # Get the data being sent
+                status = data.get('status')
+
+                # Updating attributes in the db
+                if status is not None:
+                    record.status = status
+
+                db.session.commit()
+                response_body = {'message': 'Status updated successfully'}
+                response = make_response(response_body, 200)
+
+    else:
+        response_body = {"error": "Record not found"}
+        response = make_response(jsonify(response_body), 404)
+
+    return response
+
 
 @app.route('/register', methods=['POST'])
 def signup():
@@ -88,7 +140,7 @@ def signup():
 
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({'message': 'User created successfully'}), 200
+        return jsonify({'message': 'User created successfully'}), 201
     else:
         return jsonify({'error': 'Invalid data'}), 401
 
@@ -122,7 +174,7 @@ def check_session():
     if user:
         return jsonify(user.to_dict())
     else:
-        return jsonify({'error': 'Invalid credentials'}), 204
+        return jsonify({'error': 'Not Logged in!'}), 204
 
 
 # Logout route for both user and Admin
@@ -152,7 +204,7 @@ def Admin_login():
     session['user_id'] = admin.id
     return jsonify({'message': 'Logged in successfully!'}), 200
 
-@app.route('/check_session')
+@app.route('/admin/check_session')
 def admin_check_session():
     admin = Admin.query.filter(Admin.id == session.get('user_id')).first()
     if admin:
@@ -184,10 +236,34 @@ def geolocation():
             db.session.add(new_geolocation)
             db.session.commit()
             response_body = {"message": "Geolocation created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input valid data!"}
             response = make_response(response_body)
+    return response
+
+@app.route('/geolocations/<int:id>', methods = ["GET", "DELETE"])
+def geolocation_by_id(id):
+    geolocation = Geolocation.query.filter_by(id=id).first()
+    if geolocation:
+        if request.method == "GET":
+            response_body = {
+                "id": geolocation.id,
+                "location": geolocation.location,
+                "record_id": geolocation.record_id
+            }
+            response = make_response(jsonify(response_body), 200)
+
+        elif request.method == "DELETE":
+            db.session.delete(geolocation)
+            db.session.commit()
+            response_body = {"message": "Geolocation deleted!"}
+            response = make_response(response_body, 200)
+
+    else:
+        response_body = {"error": "Geolocation not found"}
+        response = make_response(jsonify(response_body), 404)
+
     return response
 
 @app.route('/notifications', methods=['GET', 'POST'])
@@ -216,10 +292,35 @@ def notification():
             db.session.add(new_notification)
             db.session.commit()
             response_body = {"message": "Notification created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input valid data!"}
             response = make_response(response_body)
+    return response
+
+@app.route('/notifications/<int:id>', methods = ["GET", "DELETE"])
+def notification_by_id(id):
+    notification = Notification.query.filter_by(id=id).first()
+    if notification:
+        if request.method == "GET":
+            response_body = {
+                "id": notification.id,
+                "message": notification.message,
+                "record_id": notification.record_id,
+                "user_id": notification.user_id
+            }
+            response = make_response(jsonify(response_body), 200)
+
+        elif request.method == "DELETE":
+            db.session.delete(notification)
+            db.session.commit()
+            response_body = {"message": "Notification deleted!"}
+            response = make_response(response_body, 200)
+
+    else:
+        response_body = {"error": "Notification not found"}
+        response = make_response(jsonify(response_body), 404)
+
     return response
 
 @app.route('/record_images', methods=['GET', 'POST'])
@@ -246,7 +347,7 @@ def record_images():
             db.session.add(new_image)
             db.session.commit()
             response_body = {"message": "Image created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input valid data!"}
             response = make_response(response_body)
@@ -276,7 +377,7 @@ def record_videos():
             db.session.add(new_video)
             db.session.commit()
             response_body = {"message": "Video created successfully!"}
-            response = make_response(response_body, 200)
+            response = make_response(response_body, 201)
         else:
             response_body = {"message": "Input valid data!"}
             response = make_response(response_body)
@@ -294,7 +395,7 @@ def record_image(id):
             }
             response = make_response(jsonify(response_body), 200)
 
-        elif response.method == "DELETE":
+        elif request.method == "DELETE":
             db.session.delete(record_image)
             db.session.commit()
             response_body = {"message": "Record image deleted!"}
@@ -318,7 +419,7 @@ def record_video(id):
             }
             response = make_response(jsonify(response_body), 200)
 
-        elif response.method == "DELETE":
+        elif request.method == "DELETE":
             db.session.delete(record_video)
             db.session.commit()
             response_body = {"message": "Record video deleted!"}
