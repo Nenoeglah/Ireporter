@@ -8,6 +8,7 @@ from models import User, Admin, Record, RecordImage, RecordVideo, Notification, 
 
 @app.route('/records', methods=['GET', 'POST'])
 def records():
+    user = User.query.filter(User.id == session.get('user_id')).first()
     if request.method == 'GET':
         records_list = []
         records = Record.query.all()
@@ -28,11 +29,11 @@ def records():
     elif request.method == 'POST':
         data = request.get_json()
         if data:
-            user_id = data.get('user_id')
+            user_id = user.id
             type = data.get('type')
             description = data.get('description')
             location = data.get('location')
-            status = data.get('status')
+            status = 'Pending'
             new_record = Record(user_id=user_id, type=type, description=description, location=location, status=status)
             
             db.session.add(new_record)
@@ -47,6 +48,7 @@ def records():
 @app.route('/records/<int:id>', methods = ["GET", "DELETE", "PATCH"])
 def record_id(id):
     record = Record.query.filter_by(id=id).first()
+    user = User.query.filter(User.id == session.get('user_id')).first()
     if record:
         if request.method == "GET":
             response_body = {
@@ -58,41 +60,81 @@ def record_id(id):
             }
             response = make_response(jsonify(response_body), 200)
 
-        elif request.method == "DELETE":
-            db.session.delete(record)
-            db.session.commit()
-            response_body = {"message": "Record deleted!"}
-            response = make_response(response_body, 200)
-
-        elif request.method == "PATCH":
-            data = request.get_json()
-            if data:
-                record = db.session.get(Record, id)
-                # Check if the record exists
-                if record:
-                    # Get the data being sent
-                    category = data.get('category')
-                    location = data.get('location')
-                    description = data.get('description')
-                    type = data.get('type')
-
-                    # Updating attributes in the db
-                    if category is not None:
-                        record.category = category
-                    if location is not None:
-                        record.location = location
-                    if description is not None:
-                        record.description = description
-                    if type is not None:
-                        record.type = type
-
+        if record.status == 'Pending':
+            if request.method == "DELETE":
+                if record.user_id == user.id:
+                    db.session.delete(record)
                     db.session.commit()
-                    response_body = {'message': 'Record updated successfully'}
+                    response_body = {"message": "Record deleted!"}
                     response = make_response(response_body, 200)
+
+                else:
+                    response_body = {"error": "Unauthorized!"}
+                    response = make_response(jsonify(response_body), 401)
+
+            elif request.method == "PATCH":
+                if record.user_id == user.id:
+                    data = request.get_json()
+                    if data:
+                        record = db.session.get(Record, id)
+                        # Check if the record exists
+                        if record:
+                            # Get the data being sent
+                            category = data.get('category')
+                            location = data.get('location')
+                            description = data.get('description')
+                            type = data.get('type')
+
+                            # Updating attributes in the db
+                            if category is not None:
+                                record.category = category
+                            if location is not None:
+                                record.location = location
+                            if description is not None:
+                                record.description = description
+                            if type is not None:
+                                record.type = type
+
+                            db.session.commit()
+                            response_body = {'message': 'Record updated successfully'}
+                            response = make_response(response_body, 200)
+                else:
+                    response_body = {"error": "Unauthorized!"}
+                    response = make_response(jsonify(response_body), 401)
+        else:
+            response_body = {"error": "Record already triaged!"}
+            response = make_response(jsonify(response_body), 204)
 
     else:
         response_body = {"error": "Record not found"}
         response = make_response(jsonify(response_body), 404)
+
+    return response
+
+# Get all the records of a specific user
+@app.route('/user/records')
+def user_records():
+    user = User.query.filter(User.id == session.get('user_id')).first()
+    if user:
+        records_list = []
+        records = Record.query.filter(Record.user_id == user.id).all()
+        for record in records:
+            record_dict = {
+                "id": record.id,
+                "type": record.type,
+                # "category": record.category,
+                "description": record.description,
+                "location": record.location,
+                "status": record.status,
+                "user_id": record.user_id,
+                "admin_id": record.admin_id
+            }
+            records_list.append(record_dict)
+        response_body = records_list
+        response = make_response(jsonify(response_body), 200)
+    else:
+        response_body = {"error": "Log in to view your records!"}
+        response = make_response(jsonify(response_body), 401)
 
     return response
 
@@ -185,7 +227,7 @@ def check_session():
 
 
 # Logout route for both user and Admin
-@app.route('/logout', methods=['DELETE'])
+@app.route('/logout')
 def logout():
     # Clear the user_id session variable to log the user out
     session.pop('user_id', None)
