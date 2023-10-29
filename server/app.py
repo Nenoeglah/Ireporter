@@ -60,50 +60,54 @@ def record_id(id):
             }
             response = make_response(jsonify(response_body), 200)
 
-        if record.status == 'Pending':
-            if request.method == "DELETE":
-                if record.user_id == user.id:
-                    db.session.delete(record)
-                    db.session.commit()
-                    response_body = {"message": "Record deleted!"}
-                    response = make_response(response_body, 200)
+        if record.user_id == user.id:
+            if record.status == 'Pending':
+                if request.method == "DELETE":
+                    if record.user_id == user.id:
+                        db.session.delete(record)
+                        db.session.commit()
+                        response_body = {"message": "Record deleted!"}
+                        response = make_response(response_body, 200)
 
-                else:
-                    response_body = {"error": "Unauthorized!"}
-                    response = make_response(jsonify(response_body), 401)
+                    else:
+                        response_body = {"error": "Unauthorized!"}
+                        response = make_response(jsonify(response_body), 401)
 
-            elif request.method == "PATCH":
-                if record.user_id == user.id:
-                    data = request.get_json()
-                    if data:
-                        record = db.session.get(Record, id)
-                        # Check if the record exists
-                        if record:
-                            # Get the data being sent
-                            category = data.get('category')
-                            location = data.get('location')
-                            description = data.get('description')
-                            type = data.get('type')
+                elif request.method == "PATCH":
+                    if record.user_id == user.id:
+                        data = request.get_json()
+                        if data:
+                            record = db.session.get(Record, id)
+                            # Check if the record exists
+                            if record:
+                                # Get the data being sent
+                                category = data.get('category')
+                                location = data.get('location')
+                                description = data.get('description')
+                                type = data.get('type')
 
-                            # Updating attributes in the db
-                            if category is not None:
-                                record.category = category
-                            if location is not None:
-                                record.location = location
-                            if description is not None:
-                                record.description = description
-                            if type is not None:
-                                record.type = type
+                                # Updating attributes in the db
+                                if category is not None:
+                                    record.category = category
+                                if location is not None:
+                                    record.location = location
+                                if description is not None:
+                                    record.description = description
+                                if type is not None:
+                                    record.type = type
 
-                            db.session.commit()
-                            response_body = {'message': 'Record updated successfully'}
-                            response = make_response(response_body, 200)
-                else:
-                    response_body = {"error": "Unauthorized!"}
-                    response = make_response(jsonify(response_body), 401)
+                                db.session.commit()
+                                response_body = {'message': 'Record updated successfully'}
+                                response = make_response(response_body, 200)
+                    else:
+                        response_body = {"error": "Unauthorized!"}
+                        response = make_response(jsonify(response_body), 401)
+            else:
+                response_body = {"error": "Record already triaged!"}
+                response = make_response(jsonify(response_body), 208)
         else:
-            response_body = {"error": "Record already triaged!"}
-            response = make_response(jsonify(response_body), 204)
+            response_body = {"error": "Unauthorized!"}
+            response = make_response(jsonify(response_body), 401)
 
     else:
         response_body = {"error": "Record not found"}
