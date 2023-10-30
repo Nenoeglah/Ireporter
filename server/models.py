@@ -1,16 +1,10 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey
-
-
-
-
 from datetime import datetime
 from sqlalchemy.orm import validates, relationship
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.hybrid import hybrid_property
-
-
 
 #import bcrypt and db from config to prevent circular imports
 from config import db, bcrypt
@@ -150,7 +144,7 @@ class Record(db.Model, SerializerMixin):
             'description': self.description,
             'status': self.status
         }
-    
+     #validations
     @validates('category')
     def validate_category(self, key, value):
         if not value:
@@ -163,12 +157,31 @@ class Record(db.Model, SerializerMixin):
             raise ValueError("Description is required")
         return value
     
+    @validates('user_id')
+    def validates_user_id(self, key, value):
+        if not value:
+            raise ValueError("User id is required")
+        return value
+    
 class RecordImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image_url = db.Column(db.String)
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
     # define relationship with records table 
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
+    
+    @validates('record_id')
+    def validates_record_id(self, key, value):
+        if not value:
+            raise ValueError("Record id is required")
+        return value
+    
+    @validates('image_url')
+    def validates_image_url(self, key, value):
+        if not value:
+            raise ValueError("Image is required")
+        return value
+    
 class RecordVideo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     video_url = db.Column(db.String)
@@ -176,6 +189,24 @@ class RecordVideo(db.Model):
     #define relationship with records table
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
 
+    @validates('location')
+    def validates_location(self, key, value):
+        if not value:
+            raise ValueError("Location is required")
+        return value
+    
+    @validates('video_url')
+    def validates_video_url(self, key, value):
+        if not value:
+            raise ValueError("Video URL is required")
+        return value
+    
+    
+    @validates('record_id')
+    def validates_record_id(self, key, value):
+        if not value:
+            raise ValueError("Record id is required")
+        return value
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -184,6 +215,24 @@ class Notification(db.Model):
     #define relationship with records table
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
 
+    @validates('record_id')
+    def validates_record_id(self, key, value):
+        if not value:
+            raise ValueError("Record id is required")
+        return value
+    
+    @validates('user_id')
+    def validates_user_id(self, key, value):
+        if not value:
+            raise ValueError("User id is required")
+        return value
+    
+    @validates('message')
+    def validates_message(self, key, value):
+        if not value:
+            raise ValueError("Message is required")
+        return value
+
 class Geolocation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     location = db.Column(db.Text)
@@ -191,3 +240,15 @@ class Geolocation(db.Model):
     updated_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
     #define relationship with records table
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
+
+    @validates('record_id')
+    def validates_record_id(self, key, value):
+        if not value:
+            raise ValueError("Record id is required")
+        return value
+    
+    @validates('location')
+    def validates_location(self, key, value):
+        if not value:
+            raise ValueError("Location is required")
+        return value
