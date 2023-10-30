@@ -1,6 +1,6 @@
 from flask import Flask, make_response, session, jsonify, request, redirect, url_for
 from flask_migrate import Migrate
-from config import db, app
+from config import db, app, mail
 from models import User, Admin, Record, RecordImage, RecordVideo, Notification, Geolocation
 import jwt;
 import os ;
@@ -8,7 +8,18 @@ import base64;
 import random;
 import string;
 from datetime import datetime, timedelta;
+from flask_mail import Message
 
+
+#Route for testing email notification
+@app.route('/email', methods=['GET', 'POST'])
+def email():
+    if request.method == 'POST':
+        msg = Message("Hello!", sender='ireporter254ke@gmail.com.com',
+                      recipients=['allankiprop175@gmail.com'])
+        msg.body = "This is my message."
+        mail.send(msg)
+        return "Sent!"
 
 # db.init_app(app)
 
