@@ -25,7 +25,8 @@ def email():
 import cloudinary
 import cloudinary.uploader
 
-
+from utils import cloudconfig
+cloudconfig
 
 @app.route('/record_images', methods=['POST'])
 def upload_record_image():
@@ -527,11 +528,11 @@ def record_images():
             images_list.append(image_dict)
         response_body = images_list
         response = make_response(jsonify(response_body), 200)
-    elif request.method == 'POST':
-        data = request.get_json()
-        if data:
-            image_url = data.get('image_url')
-            record_id = data.get('record_id')
+    # elif request.method == 'POST':
+    #     data = request.get_json()
+    #     if data:
+    #         image_url = data.get('image_url')
+    #         record_id = data.get('record_id')
 
             # # Upload image to Cloudinary
             # result = upload(image_url)
@@ -542,15 +543,15 @@ def record_images():
 
 
 
-            new_image = RecordImage(image_url=image_url, record_id=record_id)
+            # new_image = RecordImage(image_url=image_url, record_id=record_id)
             
-            db.session.add(new_image)
-            db.session.commit()
-            response_body = {"message": "Image created successfully!"}
-            response = make_response(response_body, 201)
-        else:
-            response_body = {"message": "Input valid data!"}
-            response = make_response(response_body)
+            # db.session.add(new_image)
+            # db.session.commit()
+            # response_body = {"message": "Image created successfully!"}
+            # response = make_response(response_body, 201)
+        # else:
+        #     response_body = {"message": "Input valid data!"}
+        #     response = make_response(response_body)
     return response
 
 @app.route('/record_videos', methods=['GET', 'POST'])
@@ -567,11 +568,11 @@ def record_videos():
             videos_list.append(video_dict)
         response_body = videos_list
         response = make_response(jsonify(response_body), 200)
-    elif request.method == 'POST':
-        data = request.get_json()
-        if data:
-            video_url = data.get('video_url')
-            record_id = data.get('record_id')
+    # elif request.method == 'POST':
+    #     data = request.get_json()
+    #     if data:
+    #         video_url = data.get('video_url')
+    #         record_id = data.get('record_id')
 
             # # Upload video to Cloudinary
             # result = upload(video_url, resource_type="video")
@@ -579,15 +580,15 @@ def record_videos():
             
             # Store Cloudinary URL in the database
             
-            new_video = RecordVideo(video_url=video_url, record_id=record_id)
+        #     new_video = RecordVideo(video_url=video_url, record_id=record_id)
             
-            db.session.add(new_video)
-            db.session.commit()
-            response_body = {"message": "Video created successfully!"}
-            response = make_response(response_body, 201)
-        else:
-            response_body = {"message": "Input valid data!"}
-            response = make_response(response_body)
+        #     db.session.add(new_video)
+        #     db.session.commit()
+        #     response_body = {"message": "Video created successfully!"}
+        #     response = make_response(response_body, 201)
+        # else:
+        #     response_body = {"message": "Input valid data!"}
+        #     response = make_response(response_body)
     return response
 
 @app.route('/record_images/<int:id>', methods = ["GET", "DELETE"])
