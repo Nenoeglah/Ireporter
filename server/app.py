@@ -2,9 +2,17 @@ from flask import Flask, make_response, session, jsonify, request, redirect, url
 from flask_migrate import Migrate
 from config import db, app
 from models import User, Admin, Record, RecordImage, RecordVideo, Notification, Geolocation
+import jwt;
+import os ;
+import base64;
+import random;
+import string;
+from datetime import datetime, timedelta;
 
 
 # db.init_app(app)
+
+secret_key = base64.b64encode(os.urandom(24)).decode('utf-8')
 
 @app.route('/records', methods=['GET', 'POST'])
 def records():
@@ -16,7 +24,7 @@ def records():
             record_dict = {
                 "id": record.id,
                 "type": record.type,
-                # "category": record.category,
+                "category": record.category,
                 "description": record.description,
                 "location": record.location,
                 "status": record.status,
@@ -47,6 +55,19 @@ def records():
 
 @app.route('/records/<int:id>', methods = ["GET", "DELETE", "PATCH"])
 def record_id(id):
+    token = request.headers.get('Authorization')
+
+    if not token:
+        return jsonify({'message': 'Token is missing'}), 401
+
+    token = token.split(' ')[1]  # Extract the token from the 'Authorization' header
+
+    # Decode the token
+    payload = decode_token(token)
+
+    if isinstance(payload, str):
+        return jsonify({'message': payload}), 401
+    
     record = Record.query.filter_by(id=id).first()
     user = User.query.filter(User.id == session.get('user_id')).first()
     if record:
@@ -59,8 +80,9 @@ def record_id(id):
                 "status": record.status
             }
             response = make_response(jsonify(response_body), 200)
-
-        if record.user_id == user.id:
+            return response
+#.user_id == user.id
+        if request.method == "PATCH" or request.method == "DELETE":
             if record.status == 'Pending':
                 if request.method == "DELETE":
                     if record.user_id == user.id:
@@ -153,7 +175,7 @@ def admin_records():
             record_dict = {
                 "id": record.id,
                 "type": record.type,
-                # "category": record.category,
+                "category": record.category,
                 "description": record.description,
                 "location": record.location,
                 "status": record.status,
@@ -245,7 +267,19 @@ def login():
         return jsonify({'error': 'Invalid credentials'}), 401
 
     session['user_id'] = user.id
-    return jsonify({'message': 'Logged in successfully!'}), 200
+    expiration_time = datetime.utcnow() + timedelta(hours=1)
+    token = jwt.encode({'user_id': user.id, 'exp': expiration_time}, secret_key, algorithm='HS256')
+    return jsonify({'message': 'Logged in successfully!', 'token': token}), 200
+
+# Helper function to decode the token
+def decode_token(token):
+    try:
+        payload = jwt.decode(token, secret_key, algorithms=['HS256'])
+        return payload
+    except jwt.ExpiredSignatureError:
+        return 'Token has expired. Please log in again.'
+    except jwt.InvalidTokenError:
+        return 'Invalid token. Please log in again.'
 
 # Check session for auto-login
 @app.route('/check_session')
