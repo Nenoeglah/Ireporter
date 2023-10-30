@@ -21,6 +21,71 @@ def email():
         mail.send(msg)
         return "Sent!"
 
+
+import cloudinary
+import cloudinary.uploader
+
+
+
+@app.route('/record_images', methods=['POST'])
+def upload_record_image():
+    if request.method == 'POST':
+        image_file = request.files['image_file']  # Assuming you're uploading an image file
+
+        if image_file:
+            try:
+                result = cloudinary.uploader.upload(image_file)  # Upload the image to Cloudinary
+                image_url = result['secure_url']  # Get the secure URL of the uploaded image
+                
+                # Save the image URL and record_id to your database
+                record_id = request.form.get('record_id')
+                new_image = RecordImage(image_url=image_url, record_id=record_id)
+                db.session.add(new_image)
+                db.session.commit()
+                
+                response_body = {"message": "Image uploaded successfully!"}
+                response = make_response(response_body, 201)
+            except Exception as e:
+                response_body = {"error": "Image upload failed"}
+                response = make_response(response_body, 500)
+        else:
+            response_body = {"message": "No image file provided"}
+            response = make_response(response_body, 400)
+    return response
+
+
+@app.route('/record_videos', methods=['POST'])
+def upload_record_video():
+    if request.method == 'POST':
+        video_file = request.files['video_file']  # Assuming you're uploading a video file
+
+        if video_file:
+            try:
+                result = cloudinary.uploader.upload(video_file, resource_type='video')  # Upload the video to Cloudinary
+                video_url = result['secure_url']  # Get the secure URL of the uploaded video
+
+                # Save the video URL and record_id to your database
+                record_id = request.form.get('record_id')
+                new_video = RecordVideo(video_url=video_url, record_id=record_id)
+                db.session.add(new_video)
+                db.session.commit()
+
+                response_body = {"message": "Video uploaded successfully!"}
+                response = make_response(response_body, 201)
+            except Exception as e:
+                response_body = {"error": "Video upload failed"}
+                response = make_response(response_body, 500)
+        else:
+            response_body = {"message": "No video file provided"}
+            response = make_response(response_body, 400)
+    return response
+
+
+
+
+
+
+
 # db.init_app(app)
 
 secret_key = base64.b64encode(os.urandom(24)).decode('utf-8')
@@ -467,6 +532,16 @@ def record_images():
         if data:
             image_url = data.get('image_url')
             record_id = data.get('record_id')
+
+            # # Upload image to Cloudinary
+            # result = upload(image_url)
+            # public_id, url = cloudinary_url(result['public_id'])
+            
+            # # Store Cloudinary URL in the database
+            
+
+
+
             new_image = RecordImage(image_url=image_url, record_id=record_id)
             
             db.session.add(new_image)
@@ -497,6 +572,13 @@ def record_videos():
         if data:
             video_url = data.get('video_url')
             record_id = data.get('record_id')
+
+            # # Upload video to Cloudinary
+            # result = upload(video_url, resource_type="video")
+            # public_id, url = cloudinary_url(result['public_id'], resource_type="video")
+            
+            # Store Cloudinary URL in the database
+            
             new_video = RecordVideo(video_url=video_url, record_id=record_id)
             
             db.session.add(new_video)
