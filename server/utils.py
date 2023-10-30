@@ -3,8 +3,9 @@
 import cloudinary
 
 # Configure Cloudinary with your credentials
-cloudinary.config(
-    cloud_name="your_cloud_name",
-    api_key="your_api_key",
-    api_secret="your_api_secret"
+          
+cloudconfig = cloudinary.config( 
+  cloud_name = "dqqvxxelj", 
+  api_key = "938694657288459", 
+  api_secret = "siHTIokqLH0HJphtg2wJaKgDzH8" 
 )
