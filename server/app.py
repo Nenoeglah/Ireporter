@@ -86,6 +86,15 @@ def upload_record_video():
 
 
 
+#Route for testing email notification
+@app.route('/email', methods=['GET', 'POST'])
+def email():
+    if request.method == 'POST':
+        msg = Message("Hello!", sender='ireporter254ke@gmail.com.com',
+                      recipients=['allankiprop175@gmail.com'])
+        msg.body = "This is my message."
+        mail.send(msg)
+        return "Sent!"
 
 # db.init_app(app)
 
