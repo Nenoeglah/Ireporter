@@ -26,7 +26,7 @@ class User(db.Model, SerializerMixin):
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
 
     # password stored to `_password_hash` to store hashed password
-    password = db.Column(db.String, nullable = False)
+    _password_hash = db.Column(db.String, nullable = False) # Changed password to _password_hash for successful hashing
 
     #define relationship between users and records
     records = relationship('Record', backref="user_records") # Changed user to usr_records to fix'sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.records': property of that name exists on mapper 'Mapper[Record(record)]''
@@ -77,7 +77,8 @@ class Admin(db.Model, SerializerMixin):
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
 
      # password stored to `_password_hash` to store hashed password
-    password = db.Column(db.String, nullable = False)
+    _password_hash = db.Column(db.String, nullable = False) # Changed password to _password_hash for successful hashing
+
 
     #define relationship between admin and records
     records = relationship('Record', backref="admin_records") #Changed admin to admin_records to fix the error 'sqlalchemy.exc.ArgumentError: Error creating backref 'admin' on relationship 'Admin.records': property of that name exists on mapper 'Mapper[Record(record)]''
@@ -134,8 +135,8 @@ class Record(db.Model, SerializerMixin):
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'))
 
     # define the relationship between records with all the other tables 
-    user = relationship(User, back_populates='records')
-    admin = relationship(Admin, back_populates='records')
+    user = relationship(User, back_populates='records', overlaps="user_records")
+    admin = relationship(Admin, back_populates='records', overlaps="admin_records")
     
     record_images = relationship('RecordImage', backref='record')
     record_videos = relationship('RecordVideo', backref='record')
@@ -151,13 +152,13 @@ class Record(db.Model, SerializerMixin):
         }
     
     @validates('category')
-    def validate_category(self, value):
+    def validate_category(self, key, value):
         if not value:
             raise ValueError("Choose a category!")
         return value
     
     @validates('description')
-    def validate_description(self, value):
+    def validate_description(self, key, value):
         if not value:
             raise ValueError("Description is required")
         return value
