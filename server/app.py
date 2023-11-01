@@ -1,6 +1,6 @@
 from flask import Flask, make_response, session, jsonify, request, redirect, url_for
 from flask_migrate import Migrate
-from config import db, app
+from config import db, app, mail
 from models import User, Admin, Record, RecordImage, RecordVideo, Notification, Geolocation
 import jwt;
 import os ;
@@ -9,14 +9,24 @@ import random;
 import string;
 from datetime import datetime, timedelta;
 
-
-
+from flask_mail import Message
 
 import cloudinary
 import cloudinary.uploader
 
 from utils import cloudconfig
 cloudconfig
+
+#Route for testing email notification
+@app.route('/email', methods=['GET', 'POST'])
+def email():
+    if request.method == 'POST':
+        msg = Message("Hello!", sender='ireporter254ke@gmail.com',
+                      recipients=['allankiprop175@gmail.com'])
+        msg.body = "Allan, your report has been reviewed."
+        mail.send(msg)
+        return "Sent!"
+    
 
 @app.route('/record_images', methods=['POST'])
 def upload_record_image():
@@ -107,9 +117,10 @@ def records():
             user_id = user.id
             type = data.get('type')
             description = data.get('description')
+            category = data.get('category')
             location = data.get('location')
             status = 'Pending'
-            new_record = Record(user_id=user_id, type=type, description=description, location=location, status=status)
+            new_record = Record(user_id=user_id, type=type, category=category, description=description, location=location, status=status)
             
             db.session.add(new_record)
             db.session.commit()
@@ -261,6 +272,7 @@ def admin_records():
 @app.route('/admin/records/<int:id>', methods = ["PATCH"])
 def admin_record_id(id):
     record = Record.query.filter_by(id=id).first()
+    user = User.query.filter(User.id == record.user_id).first()
     admin = Admin.query.filter(Admin.id == session.get('admin_id')).first()
     if admin:
         if record:
@@ -278,6 +290,15 @@ def admin_record_id(id):
                         record.admin_id = admin.id
 
                     db.session.commit()
+                    msg = Message("Report Status.", sender='ireporter254ke@gmail.com',
+                      recipients=[user.email])
+                    if status == 'Rejected':
+                        msg.body = f"Hello {user.username}! Your report has been reviewed and has been rejected."
+                    elif status == 'Under investigation':
+                        msg.body = f"Hello {user.username}! Your report has been reviewed and it's under investigation."
+                    elif status == 'Resolved':
+                        msg.body = f"Hello {user.username}! Your report has been resolved. Thank you for your submission"
+                    mail.send(msg)
                     response_body = {'message': 'Status updated successfully'}
                     response = make_response(response_body, 200)
 
