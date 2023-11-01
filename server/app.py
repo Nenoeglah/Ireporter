@@ -1,6 +1,6 @@
 from flask import Flask, make_response, session, jsonify, request, redirect, url_for
 from flask_migrate import Migrate
-from config import db, app
+from config import db, app, mail
 from models import User, Admin, Record, RecordImage, RecordVideo, Notification, Geolocation
 import jwt;
 import os ;
@@ -9,14 +9,24 @@ import random;
 import string;
 from datetime import datetime, timedelta;
 
-
-
+from flask_mail import Message
 
 import cloudinary
 import cloudinary.uploader
 
 from utils import cloudconfig
 cloudconfig
+
+#Route for testing email notification
+@app.route('/email', methods=['GET', 'POST'])
+def email():
+    if request.method == 'POST':
+        msg = Message("Hello!", sender='ireporter254ke@gmail.com',
+                      recipients=['allankiprop175@gmail.com'])
+        msg.body = "Allan, your report has been reviewed."
+        mail.send(msg)
+        return "Sent!"
+    
 
 @app.route('/record_images', methods=['POST'])
 def upload_record_image():
