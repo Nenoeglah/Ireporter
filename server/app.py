@@ -380,7 +380,7 @@ def check_session():
 
 
 # Logout route for both user and Admin
-@app.route('/logout')
+@app.route('/logout', methods=['DELETE'])
 def logout():
     # Clear the user_id session variable to log the user out
     session.pop('user_id', None)

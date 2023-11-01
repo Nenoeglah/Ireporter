@@ -20,13 +20,13 @@ function SignUp({ onLogin }) {
   function handleSubmit(e) {
     e.preventDefault()
     setIsLoading(true)
-    fetch("/signup", {
+    fetch("/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        name: name, 
+        username: name, 
         email: email,
         phone_number: phoneNumber,
         password: password,
