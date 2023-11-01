@@ -6,7 +6,7 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch("/me").then((r) => {
+    fetch("/check_session").then((r) => {
       if (r.ok) {
         r.json().then((user) => setUser(user));
       }
@@ -46,7 +46,7 @@ const Navbar = () => {
                 //to signup
                 style={{ color: "#fa7670" }}
               >
-                {user.name}'s Profile
+                {user.username}'s Profile
               </Link>
             </li>
             <li className="nav-item">
