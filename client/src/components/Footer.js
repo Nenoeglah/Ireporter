@@ -1,56 +1,36 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram, faTiktok, faTwitter, faYoutube, faTelegram } from '@fortawesome/free-brands-svg-icons';
+import React from "react";
+import { CDBFooter, CDBBox } from 'cdbreact';
+import { BsFacebook } from "react-icons/bs"
+import { BsTwitter } from "react-icons/bs"
+import { BsInstagram } from "react-icons/bs"
+import { FaTiktok } from "react-icons/fa"
+import { BsYoutube } from "react-icons/bs"
+import { BsLinkedin } from "react-icons/bs"
 
-function Footer() {
-  const footerStyle = {
-    backgroundColor: '#333',
-    color: 'white',
-    textAlign: 'center',
-    padding: '10px',
-  };
+function Footer(){
+    return(
+      <CDBFooter className="footer">
+      <CDBBox
+        display="flex"
+        justifyContent="between"
+        alignItems="center"
+        className="mx-auto py-4 flex-wrap"
+        style={{ width: '80%', height: "100%" }}
+      >
+        <CDBBox style={{display: "flex", alignItems: "center"}}>
+          <span className="ml-4" style={{ color: "#fa7670"}}>&copy; iReporter. 2023 All rights reserved.ft Allan,Joy,Eglah,Victor and Ham.</span>
+        </CDBBox>
+        <CDBBox style={{ display: "flex"}}>
+        <BsFacebook style={{ marginRight: "30px", cursor: "pointer", color: "#fa7670"}}/>
+        <BsTwitter style={{ marginRight: "30px", cursor: "pointer", color: "#fa7670"}}/>
+        <BsInstagram style={{ marginRight: "30px", cursor: "pointer", color: "#fa7670"}}/>
+        <FaTiktok style={{ marginRight: "30px", cursor: "pointer", color: "#fa7670"}}/>
+        <BsYoutube style={{ marginRight: "30px", cursor: "pointer", color: "#fa7670"}}/>
+        <BsLinkedin style={{ marginRight: "30px", cursor: "pointer", color: "#fa7670"}}/>
+        </CDBBox>
+      </CDBBox>
+    </CDBFooter>
 
-  const copyrightStyle = {
-    color: 'white',
-    marginTop: '1em',
-    textAlign: 'center',
-  };
-
-  const contactStyle = {
-    color: 'white',
-    marginTop: '0.5em',
-    textAlign: 'center',
-  };
-
-  const socialIconsStyle = {
-    fontSize: '24px',
-    marginTop: '1em',
-  };
-
-  return (
-    <footer style={footerStyle}>
-      <p style={copyrightStyle}>&copy; 2023 Doggybnb Platform. All rights reserved.</p>
-      <p style={contactStyle}>Contacts: +254 711223344 | City: Nairobi | Street: 00100 Moi Avenue</p>
-
-      <div style={socialIconsStyle}>
-        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faInstagram} style={{ color: 'white', margin: '10px' }} />
-        </a>
-        <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faTiktok} style={{ color: 'white', margin: '10px' }} />
-        </a>
-        <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faTwitter} style={{ color: 'white', margin: '10px' }} />
-        </a>
-        <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faYoutube} style={{ color: 'white', margin: '10px' }} />
-        </a>
-        <a href="https://t.me/your-telegram-link" target="_blank" rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faTelegram} style={{ color: 'white', margin: '10px' }} />
-        </a>
-      </div>
-    </footer>
-  );
+    )
 }
-
 export default Footer;
