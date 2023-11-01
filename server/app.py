@@ -117,9 +117,10 @@ def records():
             user_id = user.id
             type = data.get('type')
             description = data.get('description')
+            category = data.get('category')
             location = data.get('location')
             status = 'Pending'
-            new_record = Record(user_id=user_id, type=type, description=description, location=location, status=status)
+            new_record = Record(user_id=user_id, type=type, category=category, description=description, location=location, status=status)
             
             db.session.add(new_record)
             db.session.commit()
