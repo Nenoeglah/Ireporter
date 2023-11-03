@@ -17,6 +17,11 @@ import cloudinary.uploader
 from utils import cloudconfig
 cloudconfig
 
+
+@app.route('/')
+def home():
+    return 'Welcome to IReporter'
+
 #Route for testing email notification
 @app.route('/email', methods=['GET', 'POST'])
 def email():

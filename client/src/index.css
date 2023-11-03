@@ -4,15 +4,15 @@
 } */
 .float-container{
   padding: 20px;
-  /* height: 95vh;
+  height: 95vh;
   width: 100vw;
-  background-image: url("../public/1.jpg");
+  /* background-image: url("../public/1.jpg"); */
   background-repeat: no-repeat;
-  background-size: cover;   */
+  background-size: cover;  
 }
 .float-child1 {
   border-radius: 20px 50px 30px;
-  background: #fa7670;
+  background: #0000ff;
   padding: 20px;
   height: 150px;
   width: 50%;
@@ -62,7 +62,7 @@ html {
 .View{
   position: relative;
   height: 100%;
-  background-color:#fa7670;
+  background-color:#0000ff;
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -112,7 +112,7 @@ align-items: center;
   height: 60vh;
   font-family: system-ui;
   justify-content: center;
-  background-color:#fa7670
+  background-color:#01083f
 
 }
 

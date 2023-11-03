@@ -57,14 +57,14 @@ const AboutUs = () => {
         <section className="float-container">
           <div className="float-child1 col">
             <h1>
-              <span style={{ fontweight: "bold", color: "#ffffff" , backgroundColor:"#0000ff"}}>
+              <span style={{ fontweight: "medium", color: "#ffffff" , backgroundColor:"#0000ff"}}>
                 Welcome To &nbsp;
               </span>
-              <span style={{ fontweight: "bold", color: "white" , backgroundColor:"#0000ff"}}>
+              <span style={{ fontweight: "medium", color: "white" , backgroundColor:"#0000ff"}}>
                 iReporter
               </span>
             </h1>
-            <p style={{ fontweight: "bold", color: "white" , backgroundColor: "#0000ff"}}>
+            <p style={{ fontweight: "medium", color: "white" , backgroundColor: "#0000ff"}}>
 
               A Platform where you can report any form of corruption or
               intervention incidences.
@@ -78,7 +78,7 @@ const AboutUs = () => {
           <h1
           id="how-it-works"
             style={{
-              fontweight: "bold",
+              fontweight: "medium",
               textAlign: "center",
               color: "#4120fc",
               marginTop: "75px",
@@ -124,7 +124,7 @@ const AboutUs = () => {
         <section className="about">
           <h1
             style={{
-              fontweight: "bold",
+              fontweight: "medium",
               textAlign: "center",
               color: "#4120fc",
               marginTop: "75px"
@@ -143,7 +143,7 @@ const AboutUs = () => {
         </section>
         <h2
           id="recent-reports"
-          style={{ fontweight: "bold", textAlign: "center", color: "#4120fc" }}
+          style={{ fontweight: "medium", textAlign: "center", color: "#4120fc" }}
         >
           Recent Reports
         </h2>
@@ -174,14 +174,14 @@ const AboutUs = () => {
                       {user ? (
                         <Link
                           to="/profile"
-                          style={{ fontweight: "bold", textDecoration: "none", color: "#4120fc" }}
+                          style={{ fontweight: "medium", textDecoration: "none", color: "#4120fc" }}
                         >
                           ...Read more
                         </Link>
                       ) : (
                         <Link
                           to="/get-started"
-                          style={{ fontweight: "bold", textDecoration: "none", color: "#4120fc" }}
+                          style={{ fontweight: "medium", textDecoration: "none", color: "#4120fc" }}
                         >
                           ...Read more
                         </Link>
