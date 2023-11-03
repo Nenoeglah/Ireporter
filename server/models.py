@@ -25,6 +25,15 @@ class User(db.Model, SerializerMixin):
     #define relationship between users and records
     records = relationship('Record', backref="user_records") # Changed user to usr_records to fix'sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.records': property of that name exists on mapper 'Mapper[Record(record)]''
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'phone_number': self.phone_number,
+            'email': self.email,
+            '_password_hash_': self._password_hash
+        }
+    
     @validates('username')
     def validate_username(self, key, value):
         if not value:
@@ -76,7 +85,16 @@ class Admin(db.Model, SerializerMixin):
 
     #define relationship between admin and records
     records = relationship('Record', backref="admin_records") #Changed admin to admin_records to fix the error 'sqlalchemy.exc.ArgumentError: Error creating backref 'admin' on relationship 'Admin.records': property of that name exists on mapper 'Mapper[Record(record)]''
-
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'phone_number': self.phone_number,
+            'email': self.email,
+            '_password_hash_': self._password_hash
+        }
+    
     @validates('username')
     def validate_username(self, key, value):
         if not value:
@@ -170,6 +188,12 @@ class RecordImage(db.Model):
     # define relationship with records table 
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
     
+    def serialize(self):
+        return {
+            'id': self.id,
+            'image_url': self.image_url
+        }
+    
     @validates('record_id')
     def validates_record_id(self, key, value):
         if not value:
@@ -188,6 +212,12 @@ class RecordVideo(db.Model):
     created_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
     #define relationship with records table
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'video_url': self.video_url
+        }
 
     @validates('location')
     def validates_location(self, key, value):
@@ -215,6 +245,12 @@ class Notification(db.Model):
     #define relationship with records table
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'message': self.message
+        } 
+
     @validates('record_id')
     def validates_record_id(self, key, value):
         if not value:
@@ -240,6 +276,12 @@ class Geolocation(db.Model):
     updated_at = db.Column(db.TIMESTAMP, default=datetime.utcnow)
     #define relationship with records table
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'location': self.location
+        }
 
     @validates('record_id')
     def validates_record_id(self, key, value):
