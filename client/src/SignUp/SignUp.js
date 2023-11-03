@@ -134,3 +134,15 @@ function SignUp({ onLogin }) {
 }
 
 export default SignUp
+
+
+
+
+
+
+
+
+
+
+
+

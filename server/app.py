@@ -389,11 +389,15 @@ def logout():
 @app.route('/admin/login', methods=['POST'])
 def Admin_login():
     data = request.get_json()
+    # app.logger.info('Received login request with data: %s', data)
     if not data:
         return jsonify({'error': 'Invalid JSON data'}), 404
 
     email = data.get('email')
     password = data.get('password')
+
+    # hardcoded_admin_email = 'kitty@kitty.com'
+    # hardcoded_admin_password = 'adminpassword'
 
     if not email or not password:
         return jsonify({'error': 'Invalid credentials'}), 404
