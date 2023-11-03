@@ -12,7 +12,7 @@
 }
 .float-child1 {
   border-radius: 20px 50px 30px;
-  background: #0000ff;
+  background: #4120fc;
   padding: 20px;
   height: 150px;
   width: 50%;
@@ -62,7 +62,7 @@ html {
 .View{
   position: relative;
   height: 100%;
-  background-color:#0000ff;
+  background-color:#4120fc;
 display: flex;
 flex-direction: column;
 align-items: center;

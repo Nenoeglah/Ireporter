@@ -57,14 +57,14 @@ const AboutUs = () => {
         <section className="float-container">
           <div className="float-child1 col">
             <h1>
-              <span style={{ fontweight: "medium", color: "#ffffff" , backgroundColor:"#0000ff"}}>
+              <span style={{ fontweight: "medium", color: "#ffffff" , backgroundColor:"#4120fc"}}>
                 Welcome To &nbsp;
               </span>
-              <span style={{ fontweight: "medium", color: "white" , backgroundColor:"#0000ff"}}>
+              <span style={{ fontweight: "medium", color: "white" , backgroundColor:"#4120fc"}}>
                 iReporter
               </span>
             </h1>
-            <p style={{ fontweight: "medium", color: "white" , backgroundColor: "#0000ff"}}>
+            <p style={{ fontweight: "medium", color: "white" , backgroundColor: "#4120fc"}}>
 
               A Platform where you can report any form of corruption or
               intervention incidences.
@@ -204,13 +204,13 @@ const AboutUs = () => {
             </li>
           </ul>
           {user ? (
-            <Link to="/user-landing" style={{ marginLeft: "20px", backgroundColor:"#0000ff"}}>
+            <Link to="/user-landing" style={{ marginLeft: "20px", backgroundColor:"##4120fc"}}>
               <MDBBtn outline rounded className="mx-2" color="light">
                 Share Your Story
               </MDBBtn>
             </Link>
           ) : (
-            <Link to="/get-started" style={{ marginLeft: "20px", backgroundColor:"#0000ff"}}>
+            <Link to="/get-started" style={{ marginLeft: "20px", backgroundColor:"##4120fc"}}>
               <MDBBtn outline rounded className="mx-2" color="light">
                 Share Your Story
               </MDBBtn>

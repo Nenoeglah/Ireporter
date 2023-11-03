@@ -40,10 +40,10 @@ const Navbar = () => {
             fontWeight: "bold",
             color: "#white",
             padding: "2px",
-            backgroundColor: "#0000ff",
+            backgroundColor: "#4120fc",
           }}
         >
-          iREPORTER
+          iREPORTER 
         </Link>
         <div
           class="collapse navbar-collapse justify-content-end"
@@ -56,7 +56,7 @@ const Navbar = () => {
                   <Link
                     className="nav-link d-flex justify-content-center"
                     to="/profile"
-                    style={{ color: "#0000ff" }}
+                    style={{ color: "#4120fc" }}
                   >
                     {user.username}'s Profile
                   </Link>
@@ -65,7 +65,7 @@ const Navbar = () => {
                   <Link
                     className="nav-link d-flex justify-content-center"
                     to="/user-landing"
-                    style={{ color: "#0000ff" }}
+                    style={{ color: "##4120fc" }}
                   >
                     Raise an issue
                   </Link>
@@ -75,7 +75,7 @@ const Navbar = () => {
                     className="nav-link d-flex justify-content-center"
                     to="/"
                     onClick={handleLogout}
-                    style={{ color: "#0000ff" }}
+                    style={{ color: "#4120fc" }}
                   >
                     Logout
                   </Link>
@@ -89,7 +89,7 @@ const Navbar = () => {
                     onClick={() => {
                       window.location.href = "#how-it-works";
                     }}
-                    style={{ color: "#0000ff" }}
+                    style={{ color: "#4120fc" }}
                   >
                     How it works
                   </Link>
@@ -100,7 +100,7 @@ const Navbar = () => {
                     onClick={() => {
                       window.location.href = "#recent-reports";
                     }}
-                    style={{ color: "#0000ff" }}
+                    style={{ color: "#4120fc" }}
                   >
                     Recent Reports
                   </Link>
@@ -109,7 +109,7 @@ const Navbar = () => {
                   <Link
                     className="nav-link d-flex justify-content-center"
                     to="/get-started"
-                    style={{ color: "#0000ff" }}
+                    style={{ color: "#4120fc" }}
                   >
                     Get started
                   </Link>
@@ -120,7 +120,7 @@ const Navbar = () => {
               <Link
                 className="nav-link d-flex justify-content-center"
                 to="/admin/login"
-                style={{ color: "#0000ff" }}
+                style={{ color: "#4120fc" }}
               >
                 Admin Login
               </Link>
