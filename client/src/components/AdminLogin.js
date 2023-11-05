@@ -1,11 +1,10 @@
-
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 function AdminLogin({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -44,31 +43,43 @@ function AdminLogin({ onLogin }) {
   }
 
   return (
-    <div className="admin-login-page">
+    <div className="admin-login-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', marginTop: '20px' }}>
       <div className="admin-login-holder">
         <form onSubmit={handleSubmit}>
           <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
             <h2 style={{ textAlign: 'center' }}>Admin Login</h2>
           </Link>
           <div style={{ textAlign: 'center' }}>
-            <label>Email</label>
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div>
+              <label>Email</label>
+              <br />
+              <input
+                type="email"
+                placeholder="Enter your email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>Password</label>
+              <br />
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle between 'text' and 'password'
+                placeholder="Enter your password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>Show Password</label>
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+              />
+            </div>
           </div>
           <div style={{ textAlign: 'center' }}>
             <input
