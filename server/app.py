@@ -112,7 +112,7 @@ def records():
         response_body = records_list
         response = make_response(jsonify(response_body), 200)
     elif request.method == 'POST':
-        data = request.get_json()
+        data = request.form
         if data:
             user_id = user.id
             type = data.get('type')
@@ -120,10 +120,28 @@ def records():
             category = data.get('category')
             location = data.get('location')
             status = 'Pending'
+            image_file = request.files['image_file']
             new_record = Record(user_id=user_id, type=type, category=category, description=description, location=location, status=status)
-            
+
             db.session.add(new_record)
             db.session.commit()
+
+            if image_file:
+                try:
+                    result = cloudinary.uploader.upload(image_file)  # Upload the image to Cloudinary
+                    image_url = result['secure_url']  # Get the secure URL of the uploaded image
+                
+                    # Save the image URL and record_id to your database
+                    record_id = new_record.id
+                    new_image = RecordImage(image_url=image_url, record_id=record_id)
+                    db.session.add(new_image)
+                    db.session.commit()
+
+                except Exception as e:
+                    response_body = {"error": "Image upload failed"}
+                    response = make_response(response_body, 500)
+            
+            
             response_body = {"message": "Record created successfully!"}
             response = make_response(response_body, 201)
         else:

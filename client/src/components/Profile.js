@@ -12,7 +12,7 @@ function Profile({ user }) {
     const [reportToggle, setReportToggle] = useState(false);
 
     useEffect(() => {
-        fetch("/redflags")
+        fetch("/user/records")
         .then((r) => r.json())
         .then((data) => setRedFlags(data));
     }, []);
@@ -23,8 +23,8 @@ function Profile({ user }) {
       return <UserRedFlag
       key={userRedFlag.id}
       id={userRedFlag.id}
-      headline={userRedFlag.headline}
-      location={userRedFlag.address}
+      headline={userRedFlag.category}
+      location={userRedFlag.location}
       status={userRedFlag.status}
       filteredRedFlags={filteredRedFlags}
       setRedFlags={setRedFlags}

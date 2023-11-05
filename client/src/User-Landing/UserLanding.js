@@ -8,12 +8,12 @@ import Spinner from 'react-bootstrap/Spinner';
 export default function UserLanding({ user }) {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
-  const [headline, setHeadline] = useState("");
+  const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   let [address, setAddress] = useState("");
   let [latitude, setLatitude] = useState("");
   let [longitude, setLongitude] = useState("");
-  const [image, setImage] = useState("");
+  const [image_file, setImage_file] = useState("");
   const [video, setVideo] = useState("");
   const [description, setDescription] = useState("");
   // redflag
@@ -60,20 +60,21 @@ export default function UserLanding({ user }) {
     e.preventDefault();
     setIsLoading(true)
     const formData = new FormData()
-    formData.append("headline", headline)
+    formData.append("category", category)
     formData.append("address", address)
+    formData.append("type", 'Red Flag')
     formData.append("latitude", latitude)
     formData.append("longitude", longitude)
-    formData.append("image", e.target.image.files[0])
+    formData.append("image_file", e.target.image_file.files[0])
     formData.append("video", e.target.video.files[0])
     formData.append("description", description)
-    formData.append("user_id", user.id)
-    formData.append("status", "Under Investigation")
+    //formData.append("user_id", user.id)
+    //formData.append("status", "Under Investigation")
 
     console.log(formData);
 
     // // const data = new FormData()
-    // // data.append("image", image)
+    // // data.append("image_file", image_file)
     // // data.append("location", location)
     // // data.append("video", video)
     // // data.append("description", description)
@@ -81,7 +82,7 @@ export default function UserLanding({ user }) {
 
     // console.log(formData);
 
-    fetch("/redflags", {
+    fetch("/records", {
       method: "POST",
       // headers: {
       //   "Content-Type": "application/json",
@@ -102,12 +103,12 @@ export default function UserLanding({ user }) {
   function handleSubmitIntervention(e) {
     e.preventDefault();
     const formData = new FormData()
-    formData.append("headline", headline)
+    formData.append("category", category)
     formData.append("address", address)
     formData.append("latitude", latitude)
     formData.append("longitude", longitude)
     formData.append("address", address)
-    formData.append("image", e.target.image.files[0])
+    formData.append("image_file", e.target.image_file.files[0])
     formData.append("video", e.target.video.files[0])
     formData.append("description", description)
     formData.append("user_id", user.id)
@@ -172,7 +173,7 @@ export default function UserLanding({ user }) {
                 <h5 class="card-title">What is an Intervention Incident?</h5>
                 <img
                   class="card-img-top"
-                  src="https://thumbs.dreamstime.com/b/intervention-grungy-wooden-headline-maple-d-rendered-royalty-free-stock-image-can-be-used-online-website-86488320.jpg"
+                  src="https://thumbs.dreamstime.com/b/intervention-grungy-wooden-category-maple-d-rendered-royalty-free-stock-image_file-can-be-used-online-website-86488320.jpg"
                   alt="Redflag"
                 />
                 <h5>
@@ -223,7 +224,7 @@ export default function UserLanding({ user }) {
                     type="text"
                     className="form-control"
                     placeholder="Describe in a few words the incident"
-                    onChange={(e) => setHeadline(e.target.value)}
+                    onChange={(e) => setCategory(e.target.value)}
                   />
                   <label htmlFor="Location" className="form-label">
                     Location
@@ -305,10 +306,10 @@ export default function UserLanding({ user }) {
                   </label>
                   <input
                     type="file"
-                    name="image"
+                    name="image_file"
                     className="form-control"
-                    id="image"
-                    accept="image/*"
+                    id="image_file"
+                    accept="image_file/*"
                     placeholder="Upload Image"
                   />
                 </div>
