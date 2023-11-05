@@ -64,7 +64,7 @@ const AboutUs = () => {
                 iReporter
               </span>
             </h1>
-            <p>
+            <p className="platform-details">
               A Platform where you can report any form of corruption or
               intervention incidences.
             </p>
@@ -125,7 +125,7 @@ const AboutUs = () => {
             style={{
               fontweight: "bold",
               textAlign: "center",
-              color: "#fa7670",
+              color: "#e6150a",
               marginTop: "75px"
             }}
           >
@@ -134,7 +134,7 @@ const AboutUs = () => {
           <p style={{ padding: "30px", textAlign: "center" }}>
             Corruption is a huge bane in Africa’s development. African countries
             must develop novel and localised solutions that will curb this
-            menace, hence the birth of iReporter cortsey of Moringa School students project. iReporter enables any/every
+            menace, hence the birth of iReporter courtsey of Moringa School students project. iReporter enables any/every
             citizen to bring any form of corruption to the notice of appropriate
             authorities and the general public. Users can also report on things
             that needs government intervention.
