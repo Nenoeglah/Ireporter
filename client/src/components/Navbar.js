@@ -29,8 +29,7 @@ const Navbar = () => {
   return (
     <nav className="fixed-top navbar navbar-expand-sm  navbar-expand-lg navbar-dark bg-light static-top" >
       <div className="container-fluid">
-      <Link to={"/"} onClick={() => {window.location.href = "#home"}} className="navbar-brand" style={{ fontWeight: "bold",color: "#fa7670",padding:"2px" }} >
-      iREPO{/* <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/facebook/327/eyes_1f440.png" alt="..." height="36"/>*/}RTER
+      <Link to={"/"} onClick={() => {window.location.href = "#home"}} className="navbar-brand" style={{ fontWeight: "bold",color: "#e6150a",padding:"2px" }} >Ireporter
       </Link>
         <div
           class="collapse navbar-collapse justify-content-end"
@@ -44,7 +43,7 @@ const Navbar = () => {
                 className="nav-link d-flex justify-content-center"
                 to="/profile"
                 //to signup
-                style={{ color: "#fa7670" }}
+                style={{ color: "#e6150a" }}
               >
                 {user.username}'s Profile
               </Link>
@@ -54,7 +53,7 @@ const Navbar = () => {
               className="nav-link d-flex justify-content-center"
               to="/user-landing"
               //to signup
-              style={{ color: "#fa7670" }}
+              style={{ color: "#e6150a" }}
             >
              Raise an issue
             </Link>
@@ -65,7 +64,7 @@ const Navbar = () => {
             to="/"
             onClick={HandleLogout}
             //to signup
-            style={{ color: "#fa7670" }}
+            style={{ color: "#e6150a" }}
           >
             Logout
           </Link>
@@ -87,7 +86,7 @@ const Navbar = () => {
               <Link
                 className="nav-link d-flex justify-content-center"
                 onClick={() => {window.location.href = "#how-it-works"}}
-                style={{ color: "#fa7670" }}
+                style={{ color: "#e6150a" }}
               >
                 How it works
               </Link>
@@ -96,7 +95,7 @@ const Navbar = () => {
               <Link
                 className="nav-link d-flex justify-content-center"
                 onClick={() => {window.location.href = "#recent-reports"}}
-                style={{ color: "#fa7670" }}
+                style={{ color: "#e6150a" }}
               >
                 Recent Reports
               </Link>
@@ -106,7 +105,7 @@ const Navbar = () => {
                 className="nav-link d-flex justify-content-center"
                 to="/get-started"
                 //to signup
-                style={{ color: "#fa7670" }}
+                style={{ color: "#e6150a" }}
               >
                 Get started
               </Link>

@@ -29,6 +29,9 @@
   position: relative;
   top: 20px;
 }  
+.platform-details{
+  font-weight:20%;
+}
 
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -62,7 +65,7 @@ html {
 .View{
   position: relative;
   height: 100%;
-  background-color:#fa7670;
+  background-color:#e6150a;
 display: flex;
 flex-direction: column;
 align-items: center;
