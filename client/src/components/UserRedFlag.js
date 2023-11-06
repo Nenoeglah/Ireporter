@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-function UserRedFlag({ id, headline, location, status, filteredRedFlags, setRedFlags }) {
+function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedFlags }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -27,29 +27,29 @@ function UserRedFlag({ id, headline, location, status, filteredRedFlags, setRedF
     }
   })
 
-  useEffect(() => {
-    fetch('redflags')
-  },[])
+  // useEffect(() => {
+  //   fetch('redflags')
+  // },[])
 
   useEffect(() => {
-    fetch(`/redflags/${id}`)
+    fetch(`/records/${id}`)
       .then((r) => r.json())
       .then((data) => {
         setUserRedFlag(data)
       })
-  },[userRedFlag])
+  },[])
 
   const [updateRedFlagData, setUpdateRedFlagData] = useState({
-    headline: userRedFlag.headline,
-    location: userRedFlag.address,
+    headline: userRedFlag.category,
+    location: userRedFlag.location,
     description: userRedFlag.description
   })
 
   const fetchUserRedFlagData = () => {
     handleShow()
     setUpdateRedFlagData({
-    headline: userRedFlag.headline,
-    location: userRedFlag.address,
+    headline: userRedFlag.category,
+    location: userRedFlag.location,
     description: userRedFlag.description
   })}
 
@@ -60,9 +60,9 @@ function UserRedFlag({ id, headline, location, status, filteredRedFlags, setRedF
     setUpdateRedFlagData({[name]: value})
   }
 
-  useEffect(() => {
-    fetch('redflags')
-  },[])
+  // useEffect(() => {
+  //   fetch('redflags')
+  // },[])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -96,7 +96,7 @@ function UserRedFlag({ id, headline, location, status, filteredRedFlags, setRedF
   }
   
   const handleDeleteUserRedFlag = () => {
-      fetch(`/redflags/${id}`, {
+      fetch(`/records/${id}`, {
         method: "DELETE"
       })
       .then(() => {
@@ -107,7 +107,7 @@ function UserRedFlag({ id, headline, location, status, filteredRedFlags, setRedF
   return (
     <>
     <tr>
-        <td>{headline}</td>
+        <td>{category}</td>
         <td>{location}</td>
         <td>{status}</td>
         <td><div style={{ display: "flex"}}><Link style={{flexGrow: "0.25"}} onClick={fetchUserRedFlagData}><Button variant="info">Edit</Button></Link><Button variant="danger" onClick={handleDeleteUserRedFlag}>Delete</Button></div></td>
