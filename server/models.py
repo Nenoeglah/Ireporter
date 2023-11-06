@@ -150,7 +150,7 @@ class Record(db.Model, SerializerMixin):
     user = relationship(User, back_populates='records', overlaps="user_records")
     admin = relationship(Admin, back_populates='records', overlaps="admin_records")
     
-    record_images = relationship('RecordImage', backref='record')
+    record_images = relationship('RecordImage', back_populates='record')
     record_videos = relationship('RecordVideo', backref='record')
     notifications = relationship('Notification', backref='record')
     geolocation = relationship('Geolocation', backref='record')
