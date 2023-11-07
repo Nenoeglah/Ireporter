@@ -286,7 +286,7 @@ const AboutUs = () => {
         <section className="float-container">
           <div className="float-child1 col">
             <h1>
-              <span style={{ fontweight: "bold", color: "#5a7670" }}>
+              <span style={{ fontweight: "bold", color: "#e6150a" }}>
                 Welcome To &nbsp;
               </span>
               <span style={{ fontweight: "bold", color: "white" }}>
@@ -308,7 +308,7 @@ const AboutUs = () => {
             style={{
               fontweight: "bold",
               textAlign: "center",
-              color: "#fa7670",
+              color: "#e6150a",
               marginTop: "75px",
               marginBottom: "75px"
             }}
@@ -319,7 +319,7 @@ const AboutUs = () => {
            <Row>
             <Col sm> <Card style={{ width: '18rem' }}>
               <Card.Body>
-                <Card.Title style={{ textAlign: "center"}}><BsPenFill style={{ color: "#fa7670", marginBottom: "15px"}} size="2.85rem"/><h2 style={{ fontSize: "24px"}}>Sign up</h2></Card.Title>
+                <Card.Title style={{ textAlign: "center"}}><BsPenFill style={{ color: "#e6150a", marginBottom: "15px"}} size="2.85rem"/><h2 style={{ fontSize: "24px"}}>Sign up</h2></Card.Title>
                 <Card.Text style={{ fontSize: "16px", textAlign: "center"}}>
                   Set up and iReporter account to access its features
                 </Card.Text>
@@ -329,7 +329,7 @@ const AboutUs = () => {
             <Col sm>
               <Card style={{ width: '18rem' }}>
               <Card.Body>
-                <Card.Title style={{ textAlign: "center"}}><BsCameraReelsFill style={{ color: "#fa7670", marginBottom: "15px"}} size="2.85rem"/><h2 style={{ fontSize: "24px"}}>Record your report</h2></Card.Title>
+                <Card.Title style={{ textAlign: "center"}}><BsCameraReelsFill style={{ color: "#e6150a", marginBottom: "15px"}} size="2.85rem"/><h2 style={{ fontSize: "24px"}}>Record your report</h2></Card.Title>
                 <Card.Text style={{ fontSize: "16px", textAlign: "center"}}>
                   Capture the incident in real time and upload it to the app.
                 </Card.Text>
@@ -339,7 +339,7 @@ const AboutUs = () => {
             <Col sm>
             <Card style={{ width: '18rem' }}>
               <Card.Body>
-                <Card.Title style={{ textAlign: "center"}}><GiInjustice style={{ color: "#fa7670", marginBottom: "15px"}} size="2.85rem"/><h2 style={{ fontSize: "24px"}}>Wait for the investigation</h2></Card.Title>
+                <Card.Title style={{ textAlign: "center"}}><GiInjustice style={{ color: "#e6150a", marginBottom: "15px"}} size="2.85rem"/><h2 style={{ fontSize: "24px"}}>Wait for the investigation</h2></Card.Title>
                 <Card.Text style={{ fontSize: "16px", textAlign: "center"}}>
                  We'll update you with a notification once your report has been reviewed.
                 </Card.Text>
@@ -360,7 +360,7 @@ const AboutUs = () => {
           >
             About Us &nbsp;
           </h1>
-          <p style={{ padding: "30px", textAlign: "center" }}>
+          <p style={{ padding: "30px", textAlign: "center" ,backgroundColor:"#810588" }}>
             Corruption is a huge bane in Africa’s development. African countries
             must develop novel and localised solutions that will curb this
             menace, hence the birth of iReporter courtsey of Moringa School students project. iReporter enables any/every
@@ -371,7 +371,7 @@ const AboutUs = () => {
         </section>
         <h2
           id="recent-reports"
-          style={{ fontweight: "bold", textAlign: "center", color: "#fa7670" }}
+          style={{ fontweight: "bold", textAlign: "center", color: "#e6150a" }}
         >
           Recent Reports
         </h2>
@@ -402,14 +402,14 @@ const AboutUs = () => {
                       {user ? (
                         <Link
                           to="/profile"
-                          style={{ fontweight: "bold", textDecoration: "none", color: "#fa7670" }}
+                          style={{ fontweight: "bold", textDecoration: "none", color: "#e6150a" }}
                         >
                           ...Read more
                         </Link>
                       ) : (
                         <Link
                           to="/get-started"
-                          style={{ fontweight: "bold", textDecoration: "none", color: "#fa7670" }}
+                          style={{ fontweight: "bold", textDecoration: "none", color: "#e6150a" }}
                         >
                           ...Read more
                         </Link>

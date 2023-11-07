@@ -16,11 +16,17 @@ const Home = ({user}) => {
   // }, []);
 
   return (
-    <div>
+    <div className='homeback-colour'>
+    <div className='home-colour'>
+
+   
+<div>
       {user?.is_admin ? <AdminNavbar/> : 
        <Navbar/> }
         <AboutUs />
         <Footer/> 
+    </div>
+    </div>
     </div>
   )
 }
