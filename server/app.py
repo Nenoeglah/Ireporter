@@ -111,7 +111,7 @@ def records():
                 "location": record.location,
                 "status": record.status,
                 "user_id": record.user_id,
-                "name": name,
+                "name": name.username,
                 "admin_id": record.admin_id
             }
             records_list.append(record_dict)
@@ -400,7 +400,7 @@ def check_session():
     if user:
         return jsonify(user.to_dict())
     else:
-        return jsonify({'error': 'Not Logged in!'}), 204
+        return jsonify({'message': 'Not Logged in!'})
 
 
 # Logout route for both user and Admin
