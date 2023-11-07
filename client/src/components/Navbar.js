@@ -6,7 +6,7 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch("/check_session").then((r) => {
+    fetch("/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => setUser(user));
       }
@@ -99,6 +99,7 @@ const Navbar = () => {
               >
                 Recent Reports
               </Link>
+              
             </li>
             <li className="nav-item">
               <Link
