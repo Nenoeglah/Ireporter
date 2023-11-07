@@ -1,72 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import Button from 'react-bootstrap/esm/Button'
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+import { Button, Form, Modal } from 'react-bootstrap';
 
 function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedFlags }) {
   const [show, setShow] = useState(false);
+  const [updateRedFlagData, setUpdateRedFlagData] = useState({
+    category: category,
+    location: location,
+    description: ''
+  });
+  const [errors, setErrors] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [errors, setErrors] = useState([]);
-  const [isSaving, setIsSaving] = useState(false)
-  const [userRedFlag, setUserRedFlag] = useState({
-    id: 0,
-    category: "",
-    location: "",
-    image: "",
-    video: "",
-    description: "",
-    status: "",
-    user: {
-      id: 0,
-      name: "",
-      email: "",
-      phone_number: "",
-      is_admin: false
-    }
-  })
-
-  useEffect(() => {
-    fetch('redflags')
-  },[])
-
-  useEffect(() => {
-    fetch(`/records/${id}`)
-      .then((r) => r.json())
-      .then((data) => {
-        setUserRedFlag(data)
-      })
-  },[])
-
-  const [updateRedFlagData, setUpdateRedFlagData] = useState({
-    category: userRedFlag.category,
-    location: userRedFlag.location,
-    description: userRedFlag.description
-  })
-
-  const fetchUserRedFlagData = () => {
-    handleShow()
-    setUpdateRedFlagData({
-    category: userRedFlag.category,
-    location: userRedFlag.location,
-    description: userRedFlag.description
-  })}
-
 
   const handleChange = (e) => {
-    let name = e.target.name
-    let value = e.target.value
-    setUpdateRedFlagData({[name]: value})
-  }
-
-  // useEffect(() => {
-  //   fetch('redflags')
-  // },[])
+    const { name, value } = e.target;
+    setUpdateRedFlagData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    setIsSaving(true)
+    e.preventDefault();
+    setIsSaving(true);
+
+    // Perform the API PATCH request to update the red flag data
     fetch(`/redflags/${id}`, {
       method: "PATCH",
       headers: {
@@ -74,104 +35,123 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
       },
       body: JSON.stringify(updateRedFlagData)
     })
-    .then((r) => {
-      if (r.ok) {
-        r.json().then((data) => {
-          const updatedUserRedFlags = filteredRedFlags?.map((updatedUserRedFlag) => {
-            if (updatedUserRedFlag.id === data.id) {
-              return data
-            } else {
-              return updatedUserRedFlag
-            }
-          })
-          handleClose()
-          setRedFlags(updatedUserRedFlags)
-          setIsSaving(false)
-        })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
       } else {
-        setIsSaving(false)
-        r.json().then(err => setErrors(err.errors))
+        throw new Error("Failed to update red flag data");
       }
     })
-  }
-  
+    .then(data => {
+      // Handle successful response data and update UI as needed
+      const updatedUserRedFlags = filteredRedFlags.map((updatedUserRedFlag) => {
+        if (updatedUserRedFlag.id === id) {
+          return {
+            ...updatedUserRedFlag,
+            category: updateRedFlagData.category,
+            location: updateRedFlagData.location,
+            description: updateRedFlagData.description
+          };
+        } else {
+          return updatedUserRedFlag;
+        }
+      });
+
+      handleClose();
+      setRedFlags(updatedUserRedFlags);
+      setIsSaving(false);
+    })
+    .catch(error => {
+      // Handle errors from the API request
+      console.error(error);
+      setIsSaving(false);
+      // Update errors state to display error messages to the user if necessary
+      setErrors(["Failed to update red flag data. Please try again."]);
+    });
+  };
+
   const handleDeleteUserRedFlag = () => {
-      fetch(`/records/${id}`, {
-        method: "DELETE"
-      })
-      .then(() => {
-        setRedFlags(filteredRedFlags.filter((specificUserRedFlag) => specificUserRedFlag.id !== id))
-      })
-    }
-    
+    fetch(`/records/${id}`, {
+      method: "DELETE"
+    })
+    .then(() => {
+      setRedFlags(filteredRedFlags.filter((specificUserRedFlag) => specificUserRedFlag.id !== id));
+      handleClose();
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  };
+
   return (
     <>
-    <tr>
+      <tr>
         <td>{category}</td>
         <td>{location}</td>
         <td>{status}</td>
-        <td><div style={{ display: "flex"}}><Link style={{flexGrow: "0.25"}} onClick={fetchUserRedFlagData}><Button variant="info">Edit</Button></Link><Button variant="danger" onClick={handleDeleteUserRedFlag}>Delete</Button></div></td>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit your red flag report</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3">
-                <Form.Label>Heading</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Red Flag Location"
-                  autoFocus
-                  name="category"
-                  value={updateRedFlagData.category}
-                  onChange={handleChange}
-                />
-              </Form.Group> 
-              <Form.Group className='mb-3'>
-                <Form.Label>Location</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Red Flag Location"
-                  autoFocus
-                  name="location"
-                  value={updateRedFlagData.location}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-              <Form.Group
-                className="mb-3"
-              >
-                <Form.Label>Description</Form.Label>
-                <Form.Control 
-                as="textarea" 
-                rows={3} 
+        <td>
+          <div style={{ display: "flex"}}>
+            <Button variant="info" onClick={handleShow}>Edit</Button>
+            <Button variant="danger" onClick={handleDeleteUserRedFlag}>Delete</Button>
+          </div>
+        </td>
+      </tr>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit your red flag report</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Category</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Red Flag Category"
+                autoFocus
+                name="category"
+                value={updateRedFlagData.category}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className='mb-3'>
+              <Form.Label>Location</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Red Flag Location"
+                name="location"
+                value={updateRedFlagData.location}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
                 placeholder="Red Flag description"
                 name="description"
                 value={updateRedFlagData.description}
                 onChange={handleChange}
-                />
-              </Form.Group>
-              <div>
-              {errors.map((err) => {
-                <p key={err} style={{ color: "red"}}>{err}</p>
-              })}
-              </div>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" 
-            onClick={handleSubmit}>
-              {isSaving ? "Saving..." : "Save Changes"}
-            </Button>
-          </Modal.Footer>
-        </Modal>
-    </tr>
+              />
+            </Form.Group>
+            <div>
+              {errors.map((err, index) => (
+                <p key={index} style={{ color: "red" }}>{err}</p>
+              ))}
+            </div>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" type="submit" disabled={isSaving}>
+                {isSaving ? "Saving..." : "Save Changes"}
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
-  )
+  );
 }
 
-export default UserRedFlag
+export default UserRedFlag;

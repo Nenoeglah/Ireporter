@@ -12,7 +12,7 @@
 }
 .float-child1 {
   border-radius: 25px 50px 35px;
-  background: #810588;
+  background: #e85d12;
   padding: 30px;
   height: 180px;
   width: 50%;
@@ -47,7 +47,12 @@ body {
  
 }
 .home-colour{
-  background-color: #810588;
+  background: linear-gradient(
+    to right,
+    black,
+    purple,
+    red,
+  );
 }
 /* .container{
   background: #b89f5d;
@@ -99,7 +104,7 @@ align-items: center;
   width: 37%;
   height: 5%;
   transform: translate(85%, 60%);
-  background-color: hsl(117, 97%, 71%);
+  background-color: hsl(117, 91%, 43%);
 }
 
 
@@ -209,7 +214,7 @@ align-items: center;
     rgb(211, 37, 37),
   );
 } 
-.homeback-colour{
+.home-colour{
   background: linear-gradient(
     to right,
     purple

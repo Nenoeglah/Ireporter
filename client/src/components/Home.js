@@ -16,7 +16,7 @@ const Home = ({user}) => {
   // }, []);
 
   return (
-    <div className='homeback-colour'>
+
     <div className='home-colour'>
 
    
@@ -26,7 +26,7 @@ const Home = ({user}) => {
         <AboutUs />
         <Footer/> 
     </div>
-    </div>
+    
     </div>
   )
 }
