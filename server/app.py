@@ -98,6 +98,7 @@ def records():
         records_list = []
         records = Record.query.all()
         for record in records:
+            name= User.query.filter(User.id == record.user_id).first()
             record_dict = {
                 "id": record.id,
                 "type": record.type,
@@ -106,6 +107,7 @@ def records():
                 "location": record.location,
                 "status": record.status,
                 "user_id": record.user_id,
+                "name": name,
                 "admin_id": record.admin_id
             }
             records_list.append(record_dict)
@@ -244,7 +246,7 @@ def user_records():
             record_dict = {
                 "id": record.id,
                 "type": record.type,
-                # "category": record.category,
+                "category": record.category,
                 "description": record.description,
                 "location": record.location,
                 "status": record.status,

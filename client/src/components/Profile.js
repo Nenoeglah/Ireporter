@@ -20,16 +20,22 @@ function Profile({ user }) {
     const filteredRedFlags = redFlags?.filter((flag) => flag?.user?.id === user?.id);
     const redFlagNumber = filteredRedFlags?.length
     const userRedFlagList = filteredRedFlags?.map((userRedFlag) => {
+      console.log(userRedFlag.category)
       return <UserRedFlag
       key={userRedFlag.id}
       id={userRedFlag.id}
-      headline={userRedFlag.category}
+      category={userRedFlag.category}
       location={userRedFlag.location}
       status={userRedFlag.status}
       filteredRedFlags={filteredRedFlags}
       setRedFlags={setRedFlags}
+
+      
+
       />
     })
+
+    
 
     useEffect(() => {
         fetch("/interventions")
@@ -43,7 +49,7 @@ function Profile({ user }) {
       return <UserIntervention
       key={userIntervention.id}
       id={userIntervention.id}
-      headline={userIntervention.headline}
+      category={userIntervention.category}
       location={userIntervention.address}
       status={userIntervention.status}
       filteredInterventions={filteredInterventions}
@@ -84,6 +90,7 @@ function Profile({ user }) {
       </thead>
       <tbody>
         {userRedFlagList}
+        
       </tbody>
     </Table>
     )
