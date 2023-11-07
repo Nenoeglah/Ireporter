@@ -8,6 +8,7 @@ function RedFlag({
   id,
   name,
   location,
+  category,
   redFlags,
   setRedFlags,
   status,
@@ -78,9 +79,10 @@ function RedFlag({
   return (
     <>
       <tr>
-        <td>{id}</td>
+        <td>{category}</td>
         <td>{name}</td>
         <td>{location}</td>
+        <td>{status}</td>
         <td>
           <Dropdown onSelect={handleSelect}>
             <Dropdown.Toggle variant="success" id="dropdown-basic">

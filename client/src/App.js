@@ -1,14 +1,18 @@
+
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "../src/components/Home";
+import Home from "./components/Home";
 import InterventionsViewDetails from "./components/InterventionsViewDetails";
 import RedFlagsViewDetails from "./components/RedFlagsViewDetails";
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
+import AdminLogin from "./components/AdminLogin";
 import AdminDashboard from "./AdminDashboard";
 import Profile from "./components/Profile";
 import UserLanding from "./User-Landing/UserLanding";
 import UsersList from "./components/UsersList";
+import Notification from "./components/Notification"; 
+// import Email from "./components/Email"; 
 import NotFound from "./components/NotFound";
 import NotAuthorized from "./components/NotAuthorized";
 
@@ -24,11 +28,12 @@ function App() {
       }
     });
   }, []);
-  
+
   return (
     <div className="row mt-3">
       <Routes>
-        <Route exact path="/" element={<Home />}></Route>
+        <Route path="/admin/login" element={<AdminLogin onLogin={setUser} />} />
+        <Route exact path="/" element={<Home user= {user} />} />
         {user?.is_admin ? (
           <Route
             exact
@@ -47,7 +52,7 @@ function App() {
         ) : (
           <Route path="/redflags/:redflagId" element={<NotAuthorized />} />
         )}
-        {user?.is_admin ? (
+        {user ? (
           <Route
             exact
             path="/dashboard"
@@ -58,7 +63,6 @@ function App() {
                 setRedFlags={setRedFlags}
                 interventions={interventions}
                 setInterventions={setInterventions}
-               
               />
             }
           />
@@ -90,6 +94,10 @@ function App() {
         ) : (
           <Route path="/profile" element={<NotAuthorized />} />
         )}
+        {/* Use the Notification component in your Routes */}
+        <Route path="/notification" element={<Notification />} />
+        {/* Use the Email component in your Routes */}
+        {/* <Route path="/email" element={<Email />} /> */}
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </div>
@@ -97,3 +105,9 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+

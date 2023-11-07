@@ -189,11 +189,11 @@ class RecordVideo(db.Model):
     #define relationship with records table
     record_id = db.Column(db.Integer, db.ForeignKey('record.id'))
 
-    # @validates('location')
-    # def validates_location(self, key, value):
-    #     if not value:
-    #         raise ValueError("Location is required")
-    #     return value
+    @validates('location')
+    def validates_location(self, key, value):
+        if not value:
+            raise ValueError("Location is required")
+        return value
     
     @validates('video_url')
     def validates_video_url(self, key, value):

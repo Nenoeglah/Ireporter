@@ -6,32 +6,37 @@ import AdminNavbar from "./components/AdminNavbar";
 import { RiAlertFill } from "react-icons/ri";
 import { FcSupport } from "react-icons/fc"
 
-function AdminDashboard({ user ,interventions, setInterventions, redFlags, setRedFlags }) {
+  function AdminDashboard({user}) {
   const [recordToggle, setRecordToggle] = useState(false)
+  const [redFlags, setRedFlags] = useState([])
+  const [interventions, setInterventions] = useState([])
 
   useEffect(() => {
-    fetch('/redflags')
+    fetch('/records')
     .then((r) => r.json())
     .then((data) => setRedFlags(data))
   }, [])
 
   useEffect(() => {
-    fetch('/interventions')
+    fetch('/records')
     .then((r) => r.json())
     .then((data) => setInterventions(data))
   }, [])
   
   const redFlagList = redFlags.map((redFlag) => {
   return <RedFlag 
+
     redFlags={redFlags}
     setRedFlags={setRedFlags}
     key={redFlag.id}
     id={redFlag.id}
-    name={redFlag?.user?.name}
-    location={redFlag.address}
+    category={redFlag.category}
+    name={redFlag.name}
+    location={redFlag.location}
     image={redFlag.image}
     video={redFlag.video}
     status={redFlag.status}
+  
   
   />
   })
@@ -42,7 +47,9 @@ function AdminDashboard({ user ,interventions, setInterventions, redFlags, setRe
       setInterventions={setInterventions}
       key={intervention.id}
       id={intervention.id}
-      name={intervention?.user?.name}
+      name={intervention.name}
+      category={intervention.category}
+
       location={intervention.address}
       image={intervention.image}
       video={intervention.video}
@@ -61,7 +68,7 @@ function AdminDashboard({ user ,interventions, setInterventions, redFlags, setRe
       <Table striped bordered hover>
       <thead>
         <tr>
-          <th>Red Flags</th>
+          <th>Red Flag</th>
           <th>Name of Reporter</th>
           <th>Location</th>
           <th>Status</th>
@@ -95,3 +102,6 @@ function AdminDashboard({ user ,interventions, setInterventions, redFlags, setRe
 }
 
 export default AdminDashboard
+
+
+

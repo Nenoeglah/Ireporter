@@ -12,7 +12,7 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
   const [isSaving, setIsSaving] = useState(false)
   const [userRedFlag, setUserRedFlag] = useState({
     id: 0,
-    headline: "",
+    category: "",
     location: "",
     image: "",
     video: "",
@@ -27,9 +27,9 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
     }
   })
 
-  // useEffect(() => {
-  //   fetch('redflags')
-  // },[])
+  useEffect(() => {
+    fetch('redflags')
+  },[])
 
   useEffect(() => {
     fetch(`/records/${id}`)
@@ -40,7 +40,7 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
   },[])
 
   const [updateRedFlagData, setUpdateRedFlagData] = useState({
-    headline: userRedFlag.category,
+    category: userRedFlag.category,
     location: userRedFlag.location,
     description: userRedFlag.description
   })
@@ -48,7 +48,7 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
   const fetchUserRedFlagData = () => {
     handleShow()
     setUpdateRedFlagData({
-    headline: userRedFlag.category,
+    category: userRedFlag.category,
     location: userRedFlag.location,
     description: userRedFlag.description
   })}
@@ -123,8 +123,8 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
                   type="text"
                   placeholder="Red Flag Location"
                   autoFocus
-                  name="headline"
-                  value={updateRedFlagData.headline}
+                  name="category"
+                  value={updateRedFlagData.category}
                   onChange={handleChange}
                 />
               </Form.Group> 
