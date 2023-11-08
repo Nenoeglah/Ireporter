@@ -27,6 +27,8 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
     }
   })
 
+  const token = localStorage.getItem('token');
+
   // useEffect(() => {
   //   fetch('redflags')
   // },[])
@@ -67,10 +69,11 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsSaving(true)
-    fetch(`/redflags/${id}`, {
+    fetch(`/records/${id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(updateRedFlagData)
     })

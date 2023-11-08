@@ -381,7 +381,7 @@ def login():
     session['user_id'] = user.id
     expiration_time = datetime.utcnow() + timedelta(hours=1)
     token = jwt.encode({'user_id': user.id, 'exp': expiration_time}, secret_key, algorithm='HS256')
-    return jsonify({'message': 'Logged in successfully!', 'token': token}), 200
+    return jsonify({'message': 'Logged in successfully!', 'user_id': user.id,'username': user.username, 'token': token}), 200
 
 # Helper function to decode the token
 def decode_token(token):
