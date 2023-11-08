@@ -1,19 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Button from 'react-bootstrap/esm/Button';
 import { Link } from "react-router-dom";
-import { Button, Form, Modal } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedFlags }) {
   const [show, setShow] = useState(false);
-  const [updateRedFlagData, setUpdateRedFlagData] = useState({
-    category: category,
-    location: location,
-    description: ''
-  });
+  const [geolocation, setGeolocation] = useState({ latitude: '', longitude: '' });
   const [errors, setErrors] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [updateRedFlagData, setUpdateRedFlagData] = useState({
+    category: '',
+    location: '',
+    description: '',
+    latitude: '',
+    longitude: ''
+  });
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setUpdateRedFlagData({
+      category: category,
+      location: location,
+      description: '',
+      latitude: '',
+      longitude: ''
+    });
+    setShow(true);
+  };
+
+  const handleGeolocationChange = (position) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    setGeolocation({ latitude, longitude });
+  };
+
+  const handleGeolocationError = (error) => {
+    console.error(error);
+  };
+
+  const fetchUserRedFlagData = () => {
+    navigator.geolocation.getCurrentPosition(
+      handleGeolocationChange,
+      handleGeolocationError
+    );
+
+    handleShow();
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,6 +59,15 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSaving(true);
+
+    // Include geolocation data in the updateRedFlagData object if available
+    if (geolocation.latitude && geolocation.longitude) {
+      setUpdateRedFlagData(prevState => ({
+        ...prevState,
+        latitude: geolocation.latitude,
+        longitude: geolocation.longitude
+      }));
+    }
 
     // Perform the API PATCH request to update the red flag data
     fetch(`/redflags/${id}`, {
@@ -50,7 +92,9 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
             ...updatedUserRedFlag,
             category: updateRedFlagData.category,
             location: updateRedFlagData.location,
-            description: updateRedFlagData.description
+            description: updateRedFlagData.description,
+            latitude: updateRedFlagData.latitude,
+            longitude: updateRedFlagData.longitude
           };
         } else {
           return updatedUserRedFlag;
@@ -75,8 +119,7 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
       method: "DELETE"
     })
     .then(() => {
-      setRedFlags(filteredRedFlags.filter((specificUserRedFlag) => specificUserRedFlag.id !== id));
-      handleClose();
+      setRedFlags(filteredRedFlags.filter((specificUserRedFlag) => specificUserRedFlag.id !== id))
     })
     .catch(error => {
       console.error(error);
@@ -91,7 +134,9 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
         <td>{status}</td>
         <td>
           <div style={{ display: "flex"}}>
-            <Button variant="info" onClick={handleShow}>Edit</Button>
+            <Link style={{ flexGrow: "0.25" }} onClick={fetchUserRedFlagData}>
+              <Button variant="info">Edit</Button>
+            </Link>
             <Button variant="danger" onClick={handleDeleteUserRedFlag}>Delete</Button>
           </div>
         </td>
@@ -103,10 +148,10 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Category</Form.Label>
+              <Form.Label>Heading</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Red Flag Category"
+                placeholder="Red Flag Location"
                 autoFocus
                 name="category"
                 value={updateRedFlagData.category}
@@ -118,6 +163,7 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
               <Form.Control
                 type="text"
                 placeholder="Red Flag Location"
+                autoFocus
                 name="location"
                 value={updateRedFlagData.location}
                 onChange={handleChange}
@@ -139,16 +185,16 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
                 <p key={index} style={{ color: "red" }}>{err}</p>
               ))}
             </div>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" type="submit" disabled={isSaving}>
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
-            </Modal.Footer>
           </Form>
         </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            {isSaving ? "Saving..." : "Save Changes"}
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
   );
