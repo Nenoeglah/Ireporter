@@ -22,7 +22,7 @@ function App() {
   const [interventions, setInterventions] = useState([]);
 
   useEffect(() => {
-    fetch("/check_session").then((r) => {
+    fetch("/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => setUser(user));
       }

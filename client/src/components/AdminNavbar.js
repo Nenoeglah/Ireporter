@@ -5,7 +5,7 @@ const AdminNavbar = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch("/admin/check_session").then((r) => {
+    fetch("/me").then((r) => {
       if (r.ok) {
         r.json().then((user) => setUser(user));
       }

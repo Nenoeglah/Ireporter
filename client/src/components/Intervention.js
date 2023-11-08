@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 function Intervention({
   id,
   name,
+  category,
   location,
   interventions,
   setInterventions,
@@ -83,9 +84,10 @@ function Intervention({
   return (
     <>
       <tr>
-        <td>{id}</td>
+        <td>{category}</td>
         <td>{name}</td>
         <td>{location}</td>
+        <td>{status}</td>
         <td>
           <Dropdown onSelect={handleSelect}>
             <Dropdown.Toggle variant="success" id="dropdown-basic">

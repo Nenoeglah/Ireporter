@@ -65,6 +65,7 @@ export default function UserLanding({ user }) {
     formData.append("type", 'Red Flag')
     formData.append("latitude", latitude)
     formData.append("longitude", longitude)
+    formData.append("location", location)
     formData.append("image_file", e.target.image_file.files[0])
     formData.append("video", e.target.video.files[0])
     formData.append("description", description)
@@ -105,17 +106,18 @@ export default function UserLanding({ user }) {
     const formData = new FormData()
     formData.append("category", category)
     formData.append("address", address)
+    formData.append("type", 'Intervention')
     formData.append("latitude", latitude)
     formData.append("longitude", longitude)
+    formData.append("location", location)
     formData.append("address", address)
     formData.append("image_file", e.target.image_file.files[0])
     formData.append("video", e.target.video.files[0])
     formData.append("description", description)
-    formData.append("user_id", user.id)
-    formData.append("status", "Under Investigation")
+    //formData.append("status", "Under Investigation")
     console.log(formData);
 
-    fetch("/interventions", {
+    fetch("/records", {
       method: "POST",
       // headers: {
       //   "Content-Type": "application/json",
