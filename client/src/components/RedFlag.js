@@ -17,7 +17,7 @@ function RedFlag({
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleDeleteRedFlag = () => {
-    fetch(`/redflags/${id}`,{
+    fetch(`/admin/records/${id}`,{
         method: 'DELETE',
     }) 
     .then(() => {
@@ -52,7 +52,7 @@ function RedFlag({
 
   const handleSelect = (eventKey) => {
     setIsUpdating(true);
-    fetch(`/redflags/${id}`, {
+    fetch(`/admin/records/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +73,7 @@ function RedFlag({
         r.json().then(console.log("Error in updating the status"));
       }
     });
-    sendEmail();
+    // sendEmail();
   };
 
   return (
