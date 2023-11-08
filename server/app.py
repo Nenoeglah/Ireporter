@@ -295,7 +295,7 @@ def admin_records():
 
 @app.route('/admin/records/<int:id>', methods = ["PATCH"])
 def admin_record_id(id):
-    record = Record.query.filter_by(id=id).first()
+    record = Record.query.filter(Record.id == id).first()
     user = User.query.filter(User.id == record.user_id).first()
     admin = Admin.query.filter(Admin.id == session.get('admin_id')).first()
     if admin:
@@ -318,7 +318,7 @@ def admin_record_id(id):
                       recipients=[user.email])
                     if status == 'Rejected':
                         msg.body = f"Hello {user.username}! Your report has been reviewed and has been rejected."
-                    elif status == 'Under investigation':
+                    elif status == 'Under Investigation':
                         msg.body = f"Hello {user.username}! Your report has been reviewed and it's under investigation."
                     elif status == 'Resolved':
                         msg.body = f"Hello {user.username}! Your report has been resolved. Thank you for your submission"
