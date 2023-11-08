@@ -27,6 +27,9 @@ function UserIntervention({ id, category, location, status, filteredIntervention
     }
   })
 
+  const token = localStorage.getItem('token');
+
+
   const handleDeleteUserIntervention = () => {
     fetch(`/records/${id}`, {
       method: "DELETE"
@@ -40,13 +43,13 @@ function UserIntervention({ id, category, location, status, filteredIntervention
   //   fetch('interventions')
   // },[])
 
-  useEffect(() => {
-    fetch(`/records/${id}`)
-      .then((r) => r.json())
-      .then((data) => {
-        setUserIntervention(data)
-      })
-  },[userIntervention])
+  // useEffect(() => {
+  //   fetch(`/records/${id}`)
+  //     .then((r) => r.json())
+  //     .then((data) => {
+  //       setUserIntervention(data)
+  //     })
+  // },[])
 
   const [updateInterventionData, setUpdateInterventionData] = useState({
     category: userIntervention.category,
@@ -79,7 +82,8 @@ function UserIntervention({ id, category, location, status, filteredIntervention
     fetch(`/records/${id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(updateInterventionData)
     })

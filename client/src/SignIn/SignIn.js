@@ -15,17 +15,27 @@ function SignIn({ onLogin, is_admin }) {
   function handleSubmit(e) {
     e.preventDefault()
     setIsLoading(true)
+
+    const loginPayload = {
+      email:email,
+      password:password,
+      is_admin: is_admin,
+    }
     fetch("/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password, is_admin }),
+      body: JSON.stringify({ email, password, is_admin, loginPayload }),
     })
     .then((r) => {
       if (r.ok) {
-        r.json().then((user) => { 
+        r.json().then((user) => {
+          localStorage.setItem('user', JSON.stringify(user)); 
+          const token = user.token
+          localStorage.setItem('token', token)
           setIsLoading(false)
+          console.log(user)
           if (user.is_admin) {
             onLogin(user)
             navigate('/dashboard')
@@ -90,10 +100,3 @@ function SignIn({ onLogin, is_admin }) {
 }
 
 export default SignIn
-
-
-
-
-
-
-

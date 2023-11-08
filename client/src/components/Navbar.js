@@ -145,14 +145,20 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch("/me").then((r) => {
-      if (r.ok) {
-        r.json().then((user) => setUser(user));
-      }
-    });
+    // Retrieve the user object from localStorage
+    const storedUser = localStorage.getItem('user');
+    
+    if (storedUser) {
+      // Parse the stored user object back to a JavaScript object
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+    }
+
   }, []);
 
+
   const HandleLogout = () => {
+    localStorage.clear()
     fetch("/logout", {
       method: "DELETE"
     })

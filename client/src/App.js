@@ -21,13 +21,32 @@ function App() {
   const [redFlags, setRedFlags] = useState([]);
   const [interventions, setInterventions] = useState([]);
 
+  // useEffect(() => {
+  //   fetch("/me").then((r) => {
+  //     if (r.ok) {
+  //       r.json().then((user) => setUser(user));
+  //     }
+  //   });
+  // }, []);
+
   useEffect(() => {
-    fetch("/me").then((r) => {
-      if (r.ok) {
-        r.json().then((user) => setUser(user));
-      }
-    });
+    // Retrieve the user object from localStorage
+    const storedUser = localStorage.getItem('user');
+    
+    if (storedUser) {
+      // Parse the stored user object back to a JavaScript object
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+    }
+
+    // Fetch other data or perform other setup as needed
+    // ...
+
   }, []);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+  };
 
   return (
     <div className="row mt-3">
@@ -69,7 +88,7 @@ function App() {
         ) : (
           <Route path="/dashboard" element={<NotAuthorized />} />
         )}
-        <Route exact path="/login" element={<SignIn onLogin={setUser} />} />
+        <Route exact path="/login" element={<SignIn onLogin={handleLogin} />} />
         <Route
           exact
           path="/get-started"
