@@ -14,7 +14,10 @@ function Profile({ user }) {
     useEffect(() => {
         fetch("/user/records")
         .then((r) => r.json())
-        .then((data) => setRedFlags(data));
+        .then((data) => {
+          const redFlagsData = data.filter(record => record.type === "Red Flag");
+          setRedFlags(redFlagsData);
+      });
     }, []);
     
     const filteredRedFlags = redFlags?.filter((flag) => flag?.user?.id === user?.id);
@@ -38,9 +41,12 @@ function Profile({ user }) {
     
 
     useEffect(() => {
-        fetch("/interventions")
+        fetch("/user/records")
         .then((r) => r.json())
-        .then((data) => setInterventions(data));
+        .then((data) => {
+          const interventionsData = data.filter(record => record.type === "Intervention");
+          setInterventions(interventionsData);
+      });
     }, []);
 
     const filteredInterventions = interventions?.filter((intervention) => intervention?.user?.id === user?.id)
@@ -50,7 +56,7 @@ function Profile({ user }) {
       key={userIntervention.id}
       id={userIntervention.id}
       category={userIntervention.category}
-      location={userIntervention.address}
+      location={userIntervention.location}
       status={userIntervention.status}
       filteredInterventions={filteredInterventions}
       setInterventions={setInterventions}

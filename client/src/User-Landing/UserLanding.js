@@ -65,6 +65,7 @@ export default function UserLanding({ user }) {
     formData.append("type", 'Red Flag')
     formData.append("latitude", latitude)
     formData.append("longitude", longitude)
+    formData.append("location", location)
     formData.append("image_file", e.target.image_file.files[0])
     formData.append("video", e.target.video.files[0])
     formData.append("description", description)
