@@ -1,63 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
-import emailjs from "emailjs-com";
-import { Link } from "react-router-dom";
 
 function Intervention({
   id,
   name,
-  category,
   location,
+  category,
   interventions,
   setInterventions,
   status,
 }) {
-
   const [recordStatus, setRecordStatus] = useState(status);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [interventionDetails, setInterventionDetails] = useState(null);
+
+  useEffect(() => {
+    
+    fetch(`/admin/records/${id}`) 
+      .then((response) => response.json())
+      .then((data) => setInterventionDetails(data))
+      .catch((error) => console.error("Error fetching intervention details:", error));
+  }, []);
 
   const handleDeleteIntervention = () => {
-    console.log(interventions)
-    fetch(`/interventions/${id}`, {
+    fetch(`/admin/records/${id}`, {
       method: "DELETE",
     })
-     
       .then(() => {
-        setInterventions( interventions=> interventions.filter((item) => item.id !== id));
-      });
-  };
-  // ############################ Email Notification Implementiation ######################################################
-
-  const sendEmail = () => {
-    const templateParams = {
-      name: `/interventions/${id}.name`,
-      email: `/interventions/${id}.email`,
-      message: "Your intervention record status has been updated!",
-    };
-
-    // dummy params => emailjs restricts to 200 free emails a month
-    emailjs.send("gmail", "feedback", templateParams, "gydg76y3g7u3ygf").then(
-      (response) => {
-        console.log(
-          "SUCCESS! Email has been sent to you!",
-          response.status,
-          response.text
+        setInterventions((interventions) =>
+          interventions.filter((intervention) => intervention.id !== id)
         );
-      },
-      (error) => {
-        console.log("FAILED...", error);
-      }
-    );
+      })
+      .catch((error) => console.error("Error deleting intervention:", error));
   };
 
-  // ############################ Email Notification Implementiation ######################################################
-
-  const handleSelect = (eventKey) => { 
-  
+  const handleSelect = (eventKey) => {
     setIsUpdating(true);
-    fetch(`/interventions/${id}`, {
+    fetch(`/admin/records/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -66,19 +46,16 @@ function Intervention({
         status: eventKey,
       }),
     }).then((r) => {
-     
       if (r.ok) {
         r.json().then(() => {
           setIsUpdating(false);
-          console.log(status);
           setRecordStatus(eventKey);
         });
       } else {
-        setIsUpdating(true);
-        r.json().then(console.log("Error in updating the status"));
+        setIsUpdating(false);
+        console.log("Error in updating the status");
       }
     });
-    sendEmail();
   };
 
   return (
@@ -104,15 +81,30 @@ function Intervention({
         </td>
         <td>
           <div style={{ display: "flex" }}>
-            <Link style={{ flexGrow: "0.25" }} to={`/interventions/${id}`}>
-              <Button variant="info">View</Button>
-            </Link>
+            <Button onClick={() => setInterventionDetails(!interventionDetails)}>
+              {interventionDetails ? "Hide Details" : "View"}
+            </Button>
             <Button onClick={handleDeleteIntervention} variant="danger">
               Delete
             </Button>
           </div>
         </td>
       </tr>
+
+      {interventionDetails && (
+        <tr>
+          <td colSpan="5">
+            <div style={{ display: "flex", justifyContent: "flex-end", width: "115%"}}>
+              <div style={{ textAlign: "right" }}>
+                <p>Category: {category}</p>
+                <p>Name: {name}</p>
+                <p>Location: {location}</p>
+                <p>Status: {recordStatus}</p>
+              </div>
+            </div>
+          </td>
+        </tr>
+      )}
     </>
   );
 }
