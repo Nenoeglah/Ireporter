@@ -14,6 +14,8 @@ from flask_mail import Message
 import cloudinary
 import cloudinary.uploader
 
+import googlemaps
+
 from utils import cloudconfig
 cloudconfig
 
@@ -484,6 +486,7 @@ def geolocation():
             response = make_response(response_body)
     return response
 
+#add location and change location routes 
 @app.route('/geolocations/<int:id>', methods = ["GET", "DELETE"])
 def geolocation_by_id(id):
     geolocation = Geolocation.query.filter_by(id=id).first()
@@ -507,6 +510,37 @@ def geolocation_by_id(id):
         response = make_response(jsonify(response_body), 404)
 
     return response
+
+# route for adding geolocation
+app.route('geolocations', methods=['POST'])
+def add_geolocation():
+    if request.method == 'POST':
+        data = request.get_json()
+
+        if data:
+            location = data.get('location')
+            record_id = data.get('record_id')
+
+            # Create a new Geolocation object
+            new_geolocation = Geolocation(location=location, record_id=record_id)
+
+            # Add the new geolocation to the database
+            db.session.add(new_geolocation)
+            db.session.commit()
+
+            # Prepare the response
+            response_body = {
+                "id": new_geolocation.id,
+                "location": new_geolocation.location,
+                "record_id": new_geolocation.record_id
+            }
+
+            return jsonify(response_body), 201 
+        else:
+            response_body = {"message": "Input valid data!"}
+            return jsonify(response_body), 400 
+        
+    return jsonify({"message": "Method not allowed"}), 405  
 
 @app.route('/notifications', methods=['GET', 'POST'])
 def notification():
@@ -689,7 +723,6 @@ def record_video(id):
         response = make_response(jsonify(response_body), 404)
 
     return response
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
