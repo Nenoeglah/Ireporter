@@ -138,6 +138,65 @@ export default function UserLanding({ user }) {
                   />
                 </div>
                 {/* ... */}
+                <div>
+                  <label htmlFor="Image" className="form-label">
+                    Image
+                  </label>
+                  <input
+                    type="file"
+                    name="image_file"
+                    className="form-control"
+                    id="image_file"
+                    accept="image_file/*"
+                    placeholder="Upload Image"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="Video" className="form-label">
+                    Video
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    accept="video_file/*"
+                    name="video_file"
+                    id ="video_file"
+                    placeholder ="Upload Video"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="Description" className="form-label">
+                    Incident Description
+                  </label>
+                  <textarea
+                    type="text"
+                    className="form-control"
+                    value={description}
+                    placeholder="Add Description"
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+                <div class="text-center">
+                  {isLoading ? (<Spinner animation="grow" variant="danger" />) : (
+                    <input
+                      class="btn btn-danger mt-3"
+                      type={"submit"}
+                      value={
+                        categoryBtn === "redflag"
+                          ? "Submit Red-Flag Incident"
+                          : "Submit Intervention Incident "
+                      }
+                    />
+                  )}
+                </div>
+                <div>
+                  {/* {errors.map((err) => (
+                    <p key={err} style={{ color: "red" }}>
+                      {err}
+                    </p>
+                  ))} */}
+                </div>
               </form>
             </div>
           </div>
@@ -146,18 +205,3 @@ export default function UserLanding({ user }) {
     </>
   );
 }
-
-const Logo = styled.h1`
-  font-family: "Permanent Marker", serif;
-  font-size: 2.5rem;
-  color: teal;
-  margin: 20px 0;
-  padding-top: 80px;
-  padding-left: 40px;
-  line-height: 1;
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-`;
