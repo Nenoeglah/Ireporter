@@ -14,10 +14,10 @@ import { GiInjustice } from "react-icons/gi";
 const AboutUs = () => {
   const [activeSlide, setActiveSlide] = useState(1);
   const [interventions, setInterventions] = useState([]);
-  const [mapLocation, setMapLocation] = useState({
-    latitude: -1.2921, 
-    longitude: 36.8219,
-  });
+  // const [mapLocation, setMapLocation] = useState({
+  //   latitude: -1.2921, 
+  //   longitude: 36.8219,
+  // });
 
   /*****handles if logged in *******/
 
