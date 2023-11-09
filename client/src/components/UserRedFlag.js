@@ -100,7 +100,12 @@ function UserRedFlag({ id, category, location, status, filteredRedFlags, setRedF
   
   const handleDeleteUserRedFlag = () => {
       fetch(`/records/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+         // added token on delete 
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+        }
       })
       .then(() => {
         setRedFlags(filteredRedFlags.filter((specificUserRedFlag) => specificUserRedFlag.id !== id))
