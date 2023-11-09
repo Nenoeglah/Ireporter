@@ -22,6 +22,10 @@ function Map() {
   const [errors, setErrors] = useState([]);
   const [selectedRed, setSelectedRed] = useState(null);
   const [selectedInt, setSelectedInt] = useState(null);
+  const [mapLocation, setMapLocation] = useState({
+    latitude: -1.2921, 
+    longitude: 36.8219,
+  });
 
   useEffect(() => {
     fetch("/interventions")
@@ -72,7 +76,13 @@ function Map() {
   // const location_b = useMemo(() => ({ lat: 0.0352, lng: 36.3643 }), []);
   // const location_c = useMemo(() => ({ lat: -1.333731, lng: 36.927109 }), []);
   // const location_d = useMemo(() => ({ lat: 0.1545, lng: 37.3171 }), []);
-
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.panTo({ lat: mapLocation.latitude, lng: mapLocation.longitude });
+      mapRef.current.setZoom(9);
+    }
+  }, [mapLocation]);
+  
   const panTo = useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
     mapRef.current.setZoom(9);
@@ -101,8 +111,8 @@ function Map() {
       </div>
     );
   return (
-    <Wrapper>
-      <Box>
+    <div className="card w-100 p-3">
+      <div className="card-body">
         <GoogleMap zoom={7} center={center} options={options} onLoad={onLoad}>
           <MapContainer>
             {interventionMarkers.map((int) => (
@@ -158,8 +168,8 @@ function Map() {
             ) : null}
           </MapContainer>
         </GoogleMap>
-      </Box>
-    </Wrapper>
+        </div>
+        </div>
   );
 }
 
