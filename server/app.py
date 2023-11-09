@@ -150,7 +150,7 @@ def records():
 
             if video_file:
                 try:
-                    result = cloudinary.uploader.upload(video_file)  # Upload the image to Cloudinary
+                    result = cloudinary.uploader.upload(video_file, resource_type='video')  # Upload the image to Cloudinary
                     video_url = result['secure_url']  # Get the secure URL of the uploaded image
                 
                     # Save the image URL and record_id to your database
@@ -395,7 +395,7 @@ def login():
         return jsonify({'error': 'Invalid credentials'}), 401
 
     session['user_id'] = user.id
-    expiration_time = datetime.utcnow() + timedelta(hours=1)
+    expiration_time = datetime.utcnow() + timedelta(hours=400)
     token = jwt.encode({'user_id': user.id, 'exp': expiration_time}, secret_key, algorithm='HS256')
     return jsonify({'message': 'Logged in successfully!', 'user_id': user.id,'username': user.username, 'token': token}), 200
 
