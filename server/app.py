@@ -127,6 +127,7 @@ def records():
             location = data.get('location')
             status = 'Pending'
             image_file = request.files['image_file']
+            video_file = request.files['video_file']
             new_record = Record(user_id=user_id, type=type, category=category, description=description, location=location, status=status)
 
             db.session.add(new_record)
@@ -145,6 +146,21 @@ def records():
 
                 except Exception as e:
                     response_body = {"error": "Image upload failed"}
+                    response = make_response(response_body, 500)
+
+            if video_file:
+                try:
+                    result = cloudinary.uploader.upload(video_file)  # Upload the image to Cloudinary
+                    video_url = result['secure_url']  # Get the secure URL of the uploaded image
+                
+                    # Save the image URL and record_id to your database
+                    record_id = new_record.id
+                    new_video = RecordVideo(video_url=video_url, record_id=record_id)
+                    db.session.add(new_video)
+                    db.session.commit()
+
+                except Exception as e:
+                    response_body = {"error": "Video upload failed"}
                     response = make_response(response_body, 500)
             
             
