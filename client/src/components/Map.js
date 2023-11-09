@@ -211,10 +211,10 @@ function Map() {
             <div>
       <label>
       newLocation:
-        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+        <input type="text" value={newLocation} onChange={(e) => setNewLocation(e.target.value)} />
       </label>
       <br />
-      <button onClick={handleAddGeolocations}>Add Geolocation</button>
+      <button onClick={ss}>Add Geolocation</button>
     </div>
           </MapContainer>
         </GoogleMap>
