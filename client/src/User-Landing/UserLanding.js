@@ -4,6 +4,70 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import "../styles/LocationBar.css";
 import Spinner from 'react-bootstrap/Spinner';
+import Form from "react-bootstrap/Form";
+
+const locations = [
+  "Nairobi",
+  "Kisumu",
+  "Mombasa",
+  "Kitale",
+  "Siaya",
+  "Kisii",
+  "Thika",
+  "Moyale",
+  "Garissa",
+  "Bungoma",
+  "Abuja",
+  "Addis Ababa",
+  "Accra",
+  "Algiers",
+  "Asmara",
+  "Bamako",
+  "Bangui",
+  "Banjul",
+  "Bissau",
+  "Bujumbura",
+  "Cairo",
+  "Conakry",
+  "Dakar",
+  "Djibouti",
+  "Dodoma",
+  "Freetown",
+  "Gaborone",
+  "Harare",
+  "Juba",
+  "Kampala",
+  "Khartoum",
+  "Kigali",
+  "Kinshasa",
+  "Libreville",
+  "Lilongwe",
+  "Lome",
+  "Luanda",
+  "Lusaka",
+  "Mamoudzou",
+  "Maputo",
+  "Maseru",
+  "Mbabane",
+  "Mogadishu",
+  "Monrovia",
+  "Moroni",
+  "Nairobi",
+  "N'Djamena",
+  "Niamey",
+  "Nouakchott",
+  "Ouagadougou",
+  "Port Louis",
+  "Porto-Novo",
+  "Praia",
+  "Pretoria",
+  "Rabat",
+  "Sao Tome",
+  "Tripoli",
+  "Tunis",
+  "Victoria",
+  "Windhoek"
+];
 
 export default function UserLanding({ user }) {
   const navigate = useNavigate()
@@ -14,7 +78,7 @@ export default function UserLanding({ user }) {
   let [latitude, setLatitude] = useState("");
   let [longitude, setLongitude] = useState("");
   const [image_file, setImage_file] = useState("");
-  const [video, setVideo] = useState("");
+  const [video_file, setVideo_file] = useState("");
   const [description, setDescription] = useState("");
   // redflag
   const [categoryBtn, setCategoryBtn] = useState("redflag");
@@ -67,7 +131,7 @@ export default function UserLanding({ user }) {
     formData.append("longitude", longitude)
     formData.append("location", location)
     formData.append("image_file", e.target.image_file.files[0])
-    formData.append("video", e.target.video.files[0])
+    formData.append("video_file", e.target.video_file.files[0])
     formData.append("description", description)
     //formData.append("user_id", user.id)
     //formData.append("status", "Under Investigation")
@@ -112,7 +176,7 @@ export default function UserLanding({ user }) {
     formData.append("location", location)
     formData.append("address", address)
     formData.append("image_file", e.target.image_file.files[0])
-    formData.append("video", e.target.video.files[0])
+    formData.append("video_file", e.target.video_file.files[0])
     formData.append("description", description)
     //formData.append("status", "Under Investigation")
     console.log(formData);
@@ -231,14 +295,32 @@ export default function UserLanding({ user }) {
                   <label htmlFor="Location" className="form-label">
                     Location
                   </label>
-                  <input
+
+                  <div style={{ marginTop: 20 }}>
+        <Form.Group controlId="locationDropdown">
+          <Form.Label>Select Location</Form.Label>
+          <Form.Control
+            as="select"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          >
+            <option value="">Select a location</option>
+            {locations.map((location, index) => (
+              <option key={index} value={location}>
+                {location}
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group>
+      </div>
+                  {/* <input
                     ref={inputRef}
                     type="text"
                     className="form-control"
                     // value={location.address}
                     placeholder="Add Location"
-                  />
-                  {location && (
+                  /> */}
+                  {/* {location && (
                     <div
                       style={{
                         marginTop: 20,
@@ -259,9 +341,9 @@ export default function UserLanding({ user }) {
                         <b>Longitude:</b> {location.lng.toFixed(6)}
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
-                {location && (
+                {/* {location && (
                   <>
                     <div>
                       <label htmlFor="Latitude" className="form-label">
@@ -300,7 +382,7 @@ export default function UserLanding({ user }) {
                       />
                     </div>
                   </>
-                )}
+                )} */}
 
                 <div>
                   <label htmlFor="Image" className="form-label">
@@ -323,9 +405,9 @@ export default function UserLanding({ user }) {
                   <input
                     type="file"
                     className="form-control"
-                    accept="video/*"
-                    name={video}
-                    id ="video"
+                    accept="video_file/*"
+                    name="video_file"
+                    id ="video_file"
                     placeholder ="Upload Video"
                   />
                 </div>
@@ -355,11 +437,11 @@ export default function UserLanding({ user }) {
                 )}
                 </div>
                 <div>
-                  {errors.map((err) => (
+                  {/* {errors.map((err) => (
                     <p key={err} style={{ color: "red" }}>
                       {err}
                     </p>
-                  ))}
+                  ))} */}
                 </div>
               </form>
             </div>
