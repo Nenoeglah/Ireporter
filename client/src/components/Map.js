@@ -27,41 +27,46 @@ function Map() {
     longitude: 36.8219,
   });
  const [newLocation, setNewLocation] = useState(null);
- const [updatedLocation, setUpdatedLocation] = useState(null);
- 
- const AddLocation = async () => {
+
+ const ss = async () => {
   try {
-    const response = await fetch('/add-location', {
+    const response = await fetch('/geolocations', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newLocation),
     });
-
-    const data = await response.json();
-    console.log(data.message);
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Geolocation added successfully:", data);
+      // Handle the response data as needed
+    } else {
+      const errorData = await response.json();
+      console.error("Error adding geolocation:", errorData);
+      // Handle the error data
+    }
   } catch (error) {
-    console.error('Error adding location:', error);
+    console.error("Error adding geolocation:", error);
   }
 };
 
-const handleChangeLocation = async () => {
-  try {
-    const response = await fetch('/change-location', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedLocation),
-    });
+// const handleChangeLocation = async () => {
+//   try {
+//     const response = await fetch('/change-location', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(updatedLocation),
+//     });
 
-    const data = await response.json();
-    console.log(data.message);
-  } catch (error) {
-    console.error('Error changing location:', error);
-  }
-};
+//     const data = await response.json();
+//     console.log(data.message);
+//   } catch (error) {
+//     console.error('Error changing location:', error);
+//   }
+// };
 
  useEffect(() => {
     fetch("/interventions")
@@ -203,6 +208,14 @@ const handleChangeLocation = async () => {
                 </div>
               </InfoWindow>
             ) : null}
+            <div>
+      <label>
+      newLocation:
+        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+      </label>
+      <br />
+      <button onClick={handleAddGeolocations}>Add Geolocation</button>
+    </div>
           </MapContainer>
         </GoogleMap>
         </div>
