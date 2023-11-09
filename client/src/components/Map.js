@@ -27,8 +27,9 @@ function Map() {
     longitude: 36.8219,
   });
  const [newLocation, setNewLocation] = useState(null);
+ const [updatedLocation, setUpdatedLocation] = useState(null);
 
- const ss = async () => {
+ const handleAddGeolocations = async () => {
   try {
     const response = await fetch('/geolocations', {
       method: 'POST',
@@ -51,22 +52,22 @@ function Map() {
   }
 };
 
-// const handleChangeLocation = async () => {
-//   try {
-//     const response = await fetch('/change-location', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(updatedLocation),
-//     });
+const handleChangeLocation = async () => {
+  try {
+    const response = await fetch('/change-location', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedLocation),
+    });
 
-//     const data = await response.json();
-//     console.log(data.message);
-//   } catch (error) {
-//     console.error('Error changing location:', error);
-//   }
-// };
+    const data = await response.json();
+    console.log(data.message);
+  } catch (error) {
+    console.error('Error changing location:', error);
+  }
+};
 
  useEffect(() => {
     fetch("/interventions")
@@ -214,7 +215,7 @@ function Map() {
         <input type="text" value={newLocation} onChange={(e) => setNewLocation(e.target.value)} />
       </label>
       <br />
-      <button onClick={ss}>Add Geolocation</button>
+      <button onClick={handleAddGeolocations}>Add Geolocation</button>
     </div>
           </MapContainer>
         </GoogleMap>
