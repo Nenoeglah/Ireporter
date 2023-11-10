@@ -16,7 +16,7 @@ import styled from "styled-components";
 //   import { Box } from “../styles”;
 import MapStyles from "../styles/MapStyles";
 
-function Map() {
+function Map({interventions, redFlags}) {
   const [interventions, setInterventions] = useState([]);
   const [redFlags, setRedFlags] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -29,6 +29,7 @@ function Map() {
  const [newLocation, setNewLocation] = useState(null);
  const [updatedLocation, setUpdatedLocation] = useState(null);
 
+//  functions to handle geolocation add or change
  const handleAddGeolocations = async () => {
   try {
     const response = await fetch('/geolocations', {
@@ -51,7 +52,7 @@ function Map() {
     console.error("Error adding geolocation:", error);
   }
 };
-
+ 
 const handleChangeLocation = async () => {
   try {
     const response = await fetch('/change-location', {
@@ -69,7 +70,8 @@ const handleChangeLocation = async () => {
   }
 };
 
- useEffect(() => {
+// fetch red flags and interventions and update state
+useEffect(() => {
     fetch("/interventions")
       .then((r) => r.json())
       .then((interventions) => setInterventions(interventions))
@@ -83,28 +85,54 @@ const handleChangeLocation = async () => {
       .catch((err) => setErrors(err.errors));
   }, []);
 
-  const interventionMarkers = interventions.map((intervention) => {
-    const center = {
+  // map over red flags and interventions to create Markers
+  const interventionMarkers = interventions.map((intervention) => ({
+    id: intervention.id,
+    position: {
       lat: intervention.latitude,
       lng: intervention.longitude,
-      address: intervention.address,
-      headline: intervention.headline,
-      status: intervention.status,
-    };
-    return center;
-  });
+    },
+    icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+    title: intervention.headline,
+    onClick: () => {
+      setSelectedInt(intervention);
+      panTo(intervention.position);
+    },
+  }));
+  // const interventionMarkers = interventions.map((intervention) => {
+  //   const center = {
+  //     lat: intervention.latitude,
+  //     lng: intervention.longitude,
+  //     address: intervention.address,
+  //     headline: intervention.headline,
+  //     status: intervention.status,
+  //   };
+  //   return center;
+  // });
 
-  const redFlagMarkers = redFlags.map((redFlag) => {
-    const center = {
+  const redFlagMarkers = redFlags.map((redFlag) => ({
+    id: redFlag.id,
+    position: {
       lat: redFlag.latitude,
       lng: redFlag.longitude,
-      address: redFlag.address,
-      headline: redFlag.headline,
-      status: redFlag.status,
-    };
-    return center;
-    // console.log(redFlag);
-  });
+    },
+    icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+    onClick: () => {
+      setSelectedRed(redFlag);
+      panTo(redFlag.position);
+    },
+  }));
+  // const redFlagMarkers = redFlags.map((redFlag) => {
+  //   const center = {
+  //     lat: redFlag.latitude,
+  //     lng: redFlag.longitude,
+  //     address: redFlag.address,
+  //     headline: redFlag.headline,
+  //     status: redFlag.status,
+  //   };
+  //   return center;
+  //   // console.log(redFlag);
+  // });
   // console.log(redFlagMarkers);
 
   const { isLoaded, loadError } = useLoadScript({
@@ -211,7 +239,7 @@ const handleChangeLocation = async () => {
             ) : null}
             <div>
       <label>
-      newLocation:
+      New Location:
         <input type="text" value={newLocation} onChange={(e) => setNewLocation(e.target.value)} />
       </label>
       <br />
