@@ -16,7 +16,7 @@ import styled from "styled-components";
 //   import { Box } from “../styles”;
 import MapStyles from "../styles/MapStyles";
 
-function Map({interventions, redFlags}) {
+function Map() {
   const [interventions, setInterventions] = useState([]);
   const [redFlags, setRedFlags] = useState([]);
   const [errors, setErrors] = useState([]);
