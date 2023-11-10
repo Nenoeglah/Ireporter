@@ -86,54 +86,54 @@ useEffect(() => {
   }, []);
 
   // map over red flags and interventions to create Markers
-  const interventionMarkers = interventions.map((intervention) => ({
-    id: intervention.id,
-    position: {
-      lat: intervention.latitude,
-      lng: intervention.longitude,
-    },
-    icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
-    title: intervention.headline,
-    onClick: () => {
-      setSelectedInt(intervention);
-      panTo(intervention.position);
-    },
-  }));
-  // const interventionMarkers = interventions.map((intervention) => {
-  //   const center = {
+  // const interventionMarkers = interventions.map((intervention) => ({
+  //   id: intervention.id,
+  //   position: {
   //     lat: intervention.latitude,
   //     lng: intervention.longitude,
-  //     address: intervention.address,
-  //     headline: intervention.headline,
-  //     status: intervention.status,
-  //   };
-  //   return center;
-  // });
+  //   },
+  //   icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+  //   title: intervention.headline,
+  //   onClick: () => {
+  //     setSelectedInt(intervention);
+  //     panTo(intervention.position);
+  //   },
+  // }));
+  const interventionMarkers = interventions.map((intervention) => {
+    const center = {
+      lat: intervention.latitude,
+      lng: intervention.longitude,
+      address: intervention.address,
+      headline: intervention.headline,
+      status: intervention.status,
+    };
+    return center;
+  });
 
-  const redFlagMarkers = redFlags.map((redFlag) => ({
-    id: redFlag.id,
-    position: {
-      lat: redFlag.latitude,
-      lng: redFlag.longitude,
-    },
-    icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-    onClick: () => {
-      setSelectedRed(redFlag);
-      panTo(redFlag.position);
-    },
-  }));
-  // const redFlagMarkers = redFlags.map((redFlag) => {
-  //   const center = {
+  // const redFlagMarkers = redFlags.map((redFlag) => ({
+  //   id: redFlag.id,
+  //   position: {
   //     lat: redFlag.latitude,
   //     lng: redFlag.longitude,
-  //     address: redFlag.address,
-  //     headline: redFlag.headline,
-  //     status: redFlag.status,
-  //   };
-  //   return center;
-  //   // console.log(redFlag);
-  // });
-  // console.log(redFlagMarkers);
+  //   },
+  //   icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+  //   onClick: () => {
+  //     setSelectedRed(redFlag);
+  //     panTo(redFlag.position);
+  //   },
+  // }));
+  const redFlagMarkers = redFlags.map((redFlag) => {
+    const center = {
+      lat: redFlag.latitude,
+      lng: redFlag.longitude,
+      address: redFlag.address,
+      headline: redFlag.headline,
+      status: redFlag.status,
+    };
+    return center;
+    // console.log(redFlag);
+  });
+  console.log(redFlagMarkers);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
