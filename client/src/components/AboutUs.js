@@ -55,8 +55,24 @@ const AboutUs = () => {
     console.log(interventions);
   }, []);
 
+  const pageStyles = {
+    position: 'relative',
+    zIndex: {
+      dropdown: 1000,
+      sticky: 1020,
+      fixed: 1030,
+      offcanvasBackdrop: 1040,
+      offcanvas: 1045,
+      modalBackdrop: 1050,
+      modal: 1055,
+      popover: 1070,
+      tooltip: 1080,
+      toast: 1090,
+    },
+  };
+
   return (
-    <div className="welcome" id="home">
+    <div className="welcome" id="home" style={pageStyles}>
       <div className="row">
         <section className="float-container">
           <div className="float-child1 col">
