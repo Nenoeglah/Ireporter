@@ -6,68 +6,7 @@ import "../styles/LocationBar.css";
 import Spinner from 'react-bootstrap/Spinner';
 import Form from "react-bootstrap/Form";
 
-const locations = [
-  "Nairobi",
-  "Kisumu",
-  "Mombasa",
-  "Kitale",
-  "Siaya",
-  "Kisii",
-  "Thika",
-  "Moyale",
-  "Garissa",
-  "Bungoma",
-  "Abuja",
-  "Addis Ababa",
-  "Accra",
-  "Algiers",
-  "Asmara",
-  "Bamako",
-  "Bangui",
-  "Banjul",
-  "Bissau",
-  "Bujumbura",
-  "Cairo",
-  "Conakry",
-  "Dakar",
-  "Djibouti",
-  "Dodoma",
-  "Freetown",
-  "Gaborone",
-  "Harare",
-  "Juba",
-  "Kampala",
-  "Khartoum",
-  "Kigali",
-  "Kinshasa",
-  "Libreville",
-  "Lilongwe",
-  "Lome",
-  "Luanda",
-  "Lusaka",
-  "Mamoudzou",
-  "Maputo",
-  "Maseru",
-  "Mbabane",
-  "Mogadishu",
-  "Monrovia",
-  "Moroni",
-  "Nairobi",
-  "N'Djamena",
-  "Niamey",
-  "Nouakchott",
-  "Ouagadougou",
-  "Port Louis",
-  "Porto-Novo",
-  "Praia",
-  "Pretoria",
-  "Rabat",
-  "Sao Tome",
-  "Tripoli",
-  "Tunis",
-  "Victoria",
-  "Windhoek"
-];
+
 
 export default function UserLanding({ user }) {
   const navigate = useNavigate()
@@ -95,19 +34,34 @@ export default function UserLanding({ user }) {
     fields: ["address_components", "geometry.location", "icon", "name"],
     // types: ["establishment"],
   };
-  useEffect(() => {
-    autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-      inputRef.current,
-      options
-    );
+  // useEffect(() => {
+  //   autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+  //     inputRef.current,
+  //     options
+  //   );
 
-    autoCompleteRef.current.addListener("place_changed", function () {
-      const location = autoCompleteRef.current.getPlace();
-      setLocation({
-        address: location.name,
-        lat: location.geometry.location.lat(),
-        lng: location.geometry.location.lng(),
-      });
+  //   autoCompleteRef.current.addListener("place_changed", function () {
+  //     const location = autoCompleteRef.current.getPlace();
+  //     setLocation({
+  //       address: location.name,
+  //       lat: location.geometry.location.lat(),
+  //       lng: location.geometry.location.lng(),
+  //     });
+  //   });
+  // }, []);
+
+
+  useEffect(() => {
+    const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
+      types: ["geocode"],
+      componentRestrictions: { country: "KE" }, // Country code for Kenya
+    });
+
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      setAddress(place.formatted_address);
+      setLatitude(place.geometry.location.lat());
+      setLongitude(place.geometry.location.lng());
     });
   }, []);
 
@@ -297,7 +251,20 @@ export default function UserLanding({ user }) {
                   </label>
 
                   <div style={{ marginTop: 20 }}>
-        <Form.Group controlId="locationDropdown">
+
+                  <label htmlFor="Location" className="form-label">
+                    Location
+                  </label>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter Location"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+
+        {/* <Form.Group controlId="locationDropdown">
           <Form.Label>Select Location</Form.Label>
           <Form.Control
             as="select"
@@ -311,7 +278,7 @@ export default function UserLanding({ user }) {
               </option>
             ))}
           </Form.Control>
-        </Form.Group>
+        </Form.Group> */}
       </div>
                   {/* <input
                     ref={inputRef}
