@@ -42,7 +42,7 @@ function RedFlag({
 
   const handleSelect = (eventKey) => {
     setIsUpdating(true);
-    fetch(`/records/${id}`, {
+    fetch(`/admin/records/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
