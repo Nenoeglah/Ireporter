@@ -6,11 +6,15 @@ import "../styles/LocationBar.css";
 import Spinner from 'react-bootstrap/Spinner';
 import Form from "react-bootstrap/Form";
 
+<<<<<<< HEAD
 const locations = [
   "Nairobi",
   "Kisumu",
   // Add more Kenyan cities if needed
 ];
+=======
+
+>>>>>>> 8ca67a83f7d88d6990fb159c8ad8539779ce64e5
 
 export default function UserLanding({ user }) {
   const navigate = useNavigate()
@@ -29,6 +33,31 @@ export default function UserLanding({ user }) {
   const autoCompleteRef = useRef();
   const inputRef = useRef(null);
 
+<<<<<<< HEAD
+=======
+  const options = {
+    // componentRestrictions: { country: "ke" },
+    fields: ["address_components", "geometry.location", "icon", "name"],
+    // types: ["establishment"],
+  };
+  // useEffect(() => {
+  //   autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+  //     inputRef.current,
+  //     options
+  //   );
+
+  //   autoCompleteRef.current.addListener("place_changed", function () {
+  //     const location = autoCompleteRef.current.getPlace();
+  //     setLocation({
+  //       address: location.name,
+  //       lat: location.geometry.location.lat(),
+  //       lng: location.geometry.location.lng(),
+  //     });
+  //   });
+  // }, []);
+
+
+>>>>>>> 8ca67a83f7d88d6990fb159c8ad8539779ce64e5
   useEffect(() => {
     const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
       types: ["geocode"],
@@ -128,7 +157,42 @@ export default function UserLanding({ user }) {
                   <label htmlFor="Location" className="form-label">
                     Location
                   </label>
+<<<<<<< HEAD
                   <input
+=======
+
+                  <div style={{ marginTop: 20 }}>
+
+                  <label htmlFor="Location" className="form-label">
+                    Location
+                  </label>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter Location"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+
+        {/* <Form.Group controlId="locationDropdown">
+          <Form.Label>Select Location</Form.Label>
+          <Form.Control
+            as="select"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          >
+            <option value="">Select a location</option>
+            {locations.map((location, index) => (
+              <option key={index} value={location}>
+                {location}
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group> */}
+      </div>
+                  {/* <input
+>>>>>>> 8ca67a83f7d88d6990fb159c8ad8539779ce64e5
                     ref={inputRef}
                     type="text"
                     className="form-control"

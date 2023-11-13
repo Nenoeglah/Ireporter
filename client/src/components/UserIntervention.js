@@ -32,7 +32,11 @@ function UserIntervention({ id, category, location, status, filteredIntervention
 
   const handleDeleteUserIntervention = () => {
     fetch(`/records/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      }
     })
     .then(() => {
       setInterventions(filteredInterventions.filter((specificUserIntervention) => specificUserIntervention.id !== id))

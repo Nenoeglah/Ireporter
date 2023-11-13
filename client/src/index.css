@@ -215,6 +215,7 @@ align-items: center;
   );
 } 
 .home-colour{
+  background-color: #5d0d4f,blue,red;
   background: linear-gradient(
     to right,
     purple
@@ -224,14 +225,15 @@ align-items: center;
     
   );
 }
+.footer-colour{
+  background: #e6150a;
+}
 
 /* .welcome{
    background-color:#fa292a; 
    background-color:#fa7670
 } */
 .footer {
-  
-  /* border-top:2px solid red; */
  position: relative;
  z-index: 1;
  width: 100%;
