@@ -3,7 +3,7 @@
 
 ## Project descrption
 
-Ireporter platform is designed to empower users in reporting and addressing incidents related to corruption and requesting government interventions in infrastructure issues. This user guide explains the key features and functionalities to help you get started.
+Ireporter platform is designed to empower users in reporting and addressing incidents related to corruption and requesting government interventions in infrastructure issues. 
 
 1. Getting Started
 
